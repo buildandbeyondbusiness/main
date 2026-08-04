@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>BUILD AND BEYOND | Local Business Growth & Technology Systems</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            bg: '#0C0C0D',
+                            surface: '#161618',
+                            card: '#202124',
+                            primary: '#D9D9D6',
+                            secondary: '#F5F5F4',
+                            accent: '#8B8D93',
+                            text: '#F5F5F4',
+                            muted: '#8B8D93',
+                            border: 'rgba(255, 255, 255, 0.08)'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+                        display: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --bg-main: #0C0C0D;
+            --surface-main: #161618;
+            --card-main: #202124;
+            --primary: #D9D9D6;
+            --secondary: #F5F5F4;
+            --accent: #8B8D93;
+            --text-main: #F5F5F4;
+            --text-muted: #8B8D93;
+            --border-glow: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            letter-spacing: -0.015em;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Ambient Atmosphere Background */
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            background: 
+                radial-gradient(circle at 15% 15%, rgba(217, 217, 214, 0.05) 0%, transparent 45%),
+                radial-gradient(circle at 85% 50%, rgba(139, 141, 147, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 50% 85%, rgba(255, 255, 255, 0.03) 0%, transparent 55%);
+        }
+
+        /* Hero Radiant Text */
+        .hero-radiant-text {
+            background: linear-gradient(135deg, #F5F5F4 0%, #D9D9D6 50%, #8B8D93 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Hero Radiant Button */
+        .btn-radiant {
+            background: #D9D9D6;
+            color: #0C0C0D;
+            font-weight: 700;
+            box-shadow: 0 4px 20px rgba(217, 217, 214, 0.15);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn-radiant:hover {
+            background: #F5F5F4;
+            box-shadow: 0 6px 25px rgba(245, 245, 244, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* Glass Panel Styling */
+        .glass-panel {
+            background: rgba(32, 33, 36, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glow);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(217, 217, 214, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            border: 1px solid var(--border-glow);
+            transition: all 0.25s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0C0C0D;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #202124;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #8B8D93;
+        }
+    </style>
+</head>
+<body class="relative antialiased selection:bg-[#D9D9D6] selection:text-[#0C0C0D] min-h-screen flex flex-col justify-between">
+
+    <!-- Aurora Atmosphere Background -->
+    <div class="aurora-bg"></div>
+
+    <!-- FLOATING TRANSLUCENT HEADER -->
+    <header class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-5xl bg-[#161618]/85 backdrop-blur-xl border border-white/10 rounded-full px-5 py-3 shadow-2xl flex items-center justify-between">
+        
+        <!-- Hamburger Menu Button (Left) -->
+        <button onclick="toggleNavOverlay()" class="w-10 h-10 rounded-full bg-[#202124] border border-white/10 flex items-center justify-center text-[#F5F5F4] hover:border-[#D9D9D6] transition-colors">
+            <i id="hamburger-icon" class="fa-solid fa-bars text-sm"></i>
+        </button>
+
+        <!-- Centered Brand Title -->
+        <a href="#" onclick="switchView('home'); return false;" class="font-display font-black text-lg sm:text-xl tracking-tight text-[#F5F5F4] hover:text-[#D9D9D6] transition-colors">
+            BUILD & BEYOND
+        </a>
+
+        <!-- Header CTA Button (Right) -->
+        <button onclick="openWhatsApp('Floating Header Audit')" class="btn-radiant px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2">
+            <i class="fa-brands fa-whatsapp text-sm"></i>
+            <span class="hidden sm:inline">Get Free Audit</span>
+            <span class="sm:hidden">Audit</span>
+        </button>
+    </header>
+
+    <!-- NAVIGATION OVERLAY MENU -->
+    <div id="nav-overlay" class="fixed inset-0 bg-[#0C0C0D]/95 backdrop-blur-2xl z-40 hidden flex-col justify-center items-center px-6 transition-all duration-300">
+        <div class="space-y-6 text-center">
+            <a href="#businesses" onclick="toggleNavOverlay(); switchView('home');" class="block text-2xl font-bold text-[#F5F5F4] hover:text-[#D9D9D6] transition-colors">Who We Help</a>
+            <a href="#outcomes" onclick="toggleNavOverlay(); switchView('home');" class="block text-2xl font-bold text-[#F5F5F4] hover:text-[#D9D9D6] transition-colors">Solutions</a>
+            <a href="#how-it-works" onclick="toggleNavOverlay(); switchView('home');" class="block text-2xl font-bold text-[#F5F5F4] hover:text-[#D9D9D6] transition-colors">How It Works</a>
+            <a href="#pricing" onclick="toggleNavOverlay(); switchView('home');" class="block text-2xl font-bold text-[#F5F5F4] hover:text-[#D9D9D6] transition-colors">Pricing</a>
+            <a href="#" onclick="toggleNavOverlay(); switchView('founders'); return false;" class="block text-2xl font-bold text-[#D9D9D6] hover:text-[#F5F5F4] transition-colors">Founders & Story</a>
+        </div>
+        <div class="mt-12">
+            <button onclick="toggleNavOverlay(); openWhatsApp('Menu Overlay CTA');" class="btn-radiant px-8 py-4 rounded-full text-sm font-bold flex items-center gap-3">
+                <i class="fa-brands fa-whatsapp text-lg"></i>
+                <span>Get Free Business Audit</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="relative z-10 pt-28 pb-16 flex-grow">
+
+        <!-- ========================================================= -->
+        <!-- VIEW 1: HOME PAGE VIEW -->
+        <!-- ========================================================= -->
+        <div id="home-view" class="block">
+            
+            <!-- HERO SECTION -->
+            <section class="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-center pt-8 sm:pt-16 pb-16">
+                <h1 class="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-[#F5F5F4] leading-[1.05] max-w-5xl mx-auto mb-8">
+                    Grow Your Business.<br>
+                    <span class="hero-radiant-text">We’ll Handle The Technology.</span>
+                </h1>
+
+                <!-- Subheading -->
+                <p class="text-base sm:text-lg md:text-xl text-[#8B8D93] max-w-3xl mx-auto font-normal leading-relaxed mb-10">
+                    High-converting Websites, AI Receptionists, WhatsApp Automation, and Custom Software that bring you more customers, save hours every week, and scale your revenue.
+                </p>
+
+                <!-- CTA Group -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md sm:max-w-none mx-auto mb-16">
+                    <button onclick="openWhatsApp('Hero Primary Audit CTA')" class="btn-radiant w-full sm:w-auto px-8 py-4 rounded-full text-sm sm:text-base font-bold flex items-center justify-center gap-3">
+                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                        <span>Get Free Business Audit</span>
+                    </button>
+                    <a href="#businesses" class="btn-secondary w-full sm:w-auto px-8 py-4 rounded-full text-sm sm:text-base font-semibold flex items-center justify-center gap-2">
+                        <span>Explore Industry Solutions</span>
+                        <i class="fa-solid fa-arrow-down text-xs"></i>
+                    </a>
+                </div>
+
+                <!-- STATS BAR (REMOVED BUSINESSES DIGITIZED & REVENUE GENERATED) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto pt-8 border-t border-white/10">
+                    <div class="p-4 rounded-2xl bg-[#161618]/60 border border-white/5 text-center">
+                        <div class="font-display text-3xl sm:text-4xl font-black text-[#F5F5F4] mb-1">99.9%</div>
+                        <div class="text-xs text-[#8B8D93] font-medium uppercase tracking-wider">Hosting & Uptime SLA</div>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-[#161618]/60 border border-white/5 text-center">
+                        <div class="font-display text-3xl sm:text-4xl font-black text-[#D9D9D6] mb-1">24/7</div>
+                        <div class="text-xs text-[#8B8D93] font-medium uppercase tracking-wider">AI Lead Automation</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BUSINESSES WE HELP SECTION (NO EMOJIS) -->
+            <section id="businesses" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-24">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-xs font-mono text-[#D9D9D6] uppercase tracking-widest block mb-3">TAILORED INDUSTRY SOLUTIONS</span>
+                    <h2 class="font-display text-3xl sm:text-5xl font-extrabold text-[#F5F5F4] mb-4">Businesses We Transform</h2>
+                    <p class="text-sm sm:text-base text-[#8B8D93]">We eliminate the exact operational bottlenecks holding your local store or clinic back.</p>
+                </div>
+
+                <!-- Industry Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Dentists -->
+                    <div class="glass-panel p-6 rounded-2xl relative">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D9D9D6] mb-4">
+                            <i class="fa-solid fa-tooth text-xl"></i>
+                        </div>
+                        <h3 class="font-display text-xl font-bold text-white mb-3">Dentists & Clinics</h3>
+                        <div class="space-y-2 mb-6 text-xs text-[#8B8D93]">
+                            <p class="text-rose-400 font-medium"><i class="fa-solid fa-xmark mr-1.5"></i> Missed patient phone calls</p>
+                            <p class="text-rose-400 font-medium"><i class="fa-solid fa-xmark mr-1.5"></i> Manual appointment diaries</p>
+                        </div>
+                        <div class="pt-4 border-t border-white/10 text-xs">
+                            <span class="text-[#D9D9D6] font-bold block mb-1">OUR FIX:</span>
+                            <p class="text-white">AI Voice Receptionist + Automated WhatsApp slot booking.</p>
+                        </div>
+                    </div>
+
+                    <!-- Restaurants -->
+                    <div class="glass-panel p-6 rounded-2xl relative">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D9D9D6] mb-4">
+                            <i class="fa-solid fa-utensils text-xl"></i>
+                        </div>
+                        <h3 class="font-display text-xl font-bold text-white mb-3">Restaurants & Cafes</h3>
+                        <div class="space-y-2 mb-6 text-xs text-[#8B8D93]">
+                            <p class="text-rose-400 font-medium"><i class="fa-solid fa-xmark mr-1.5"></i> High delivery app commissions</p>
+                            <p class="text-rose-400 font-medium"><i class="fa-solid fa-xmark mr-1.5"></i> No direct customer list</p>
+                        </div>
+                        <div class="pt-4 border-t border-white/10 text-xs">
+                            <span class="text-[#D9D9D6] font-bold block mb-1">OUR FIX:</span>
+                            <p class="text-white">Direct WhatsApp menu ordering & table reservation hub.</p>
+                        </div>
+                    </div>
+
+                    <!-- Gyms -->
+                    <div class="glass-panel p-6 rounded-2xl relative">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D9D9D6] mb-4">
+                            <i class="fa-solid fa-dumbbell text-xl"></i>
+                        </div>
+                        <h3 class="font-display text-xl font-bold text-white mb-3">Gyms & Studios</h3>
+                        <div class="space-y-2 mb-6 text-xs text-[#8B8D93]">
+                            <p class="text-rose-400 font-medium"><i class="fa-solid fa-xmark mr-1.5"></i> Expiring memberships untracked</p>
+                            <p class="text-rose-400 font-medium"><i class="fa-solid fa-xmark mr-1.5"></i> Low trial conversion rates</p>
+                        </div>
+                        <div class="pt-4 border-t border-white/10 text-xs">
+                            <span class="text-[#D9D9D6] font-bold block mb-1">OUR FIX:</span>
+                            <p class="text-white">Automated WhatsApp renewal alerts & free trial booking engine.</p>
+                        </div>
+                    </div>
+
+                    <!-- Salons -->
+                    <div class="glass-panel p-6 rounded-2xl relative">
+                        <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D9D9D6] mb-4">
+                            <i class="fa-solid fa-scissors text-xl"></i>
+                        </div>
+                        <h3 class="font-display text-xl font-bold text-white mb-3">Salons & Boutiques</h3>
+                        <div class="space-y-2 mb-6 text-xs text-[#8B8D93]">
+                            <p class="text-rose-400 font-medium"><i class="fa-solid fa-xmark mr-1.5"></i> Empty weekday schedules</p>
+                            <p class="text-rose-400 font-medium"><i class="fa-solid fa-xmark mr-1.5"></i> Manual inventory checks</p>
+                        </div>
+                        <div class="pt-4 border-t border-white/10 text-xs">
+                            <span class="text-[#D9D9D6] font-bold block mb-1">OUR FIX:</span>
+                            <p class="text-white">AI Virtual Trial Room & Live Barcode Inventory POS desk.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FOUR GROWTH PILLARS -->
+            <section id="outcomes" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-24">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-xs font-mono text-[#D9D9D6] uppercase tracking-widest block mb-3">THE GROWTH ARCHITECTURE</span>
+                    <h2 class="font-display text-3xl sm:text-5xl font-extrabold text-[#F5F5F4] mb-4">Four Pillars of Business Digitization</h2>
+                    <p class="text-sm sm:text-base text-[#8B8D93]">We build complete, automated revenue-generating systems for your business.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Pillar 1 -->
+                    <div class="glass-panel p-8 rounded-3xl relative">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D9D9D6] text-2xl">
+                                <i class="fa-solid fa-bullseye"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-mono text-[#D9D9D6] uppercase">Pillar 01</span>
+                                <h3 class="font-display text-2xl font-bold text-white">Get More Customers</h3>
+                            </div>
+                        </div>
+                        <p class="text-sm text-[#8B8D93] leading-relaxed mb-6">
+                            High-speed storefronts paired with local Google Maps optimization to ensure local buyers find and trust you first.
+                        </p>
+                        <div class="grid grid-cols-2 gap-3 text-xs font-medium text-white">
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-globe text-[#D9D9D6]"></i> Custom Website</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-magnifying-glass text-[#D9D9D6]"></i> Google SEO</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-location-dot text-[#D9D9D6]"></i> Google Maps Rank</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-server text-[#D9D9D6]"></i> 99.9% Uptime Hosting</div>
+                        </div>
+                    </div>
+
+                    <!-- Pillar 2 -->
+                    <div class="glass-panel p-8 rounded-3xl relative">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D9D9D6] text-2xl">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-mono text-[#D9D9D6] uppercase">Pillar 02</span>
+                                <h3 class="font-display text-2xl font-bold text-white">Save Staff Hours</h3>
+                            </div>
+                        </div>
+                        <p class="text-sm text-[#8B8D93] leading-relaxed mb-6">
+                            Automate inquiry replies, appointment slots, and pricing quotes so your front desk can focus entirely on serving in-store clients.
+                        </p>
+                        <div class="grid grid-cols-2 gap-3 text-xs font-medium text-white">
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-headset text-[#D9D9D6]"></i> AI Phone Receptionist</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-brands fa-whatsapp text-[#D9D9D6]"></i> WhatsApp Bot</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-calendar-check text-[#D9D9D6]"></i> Auto Slot Booking</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-file-invoice text-[#D9D9D6]"></i> Instant PDF Quotes</div>
+                        </div>
+                    </div>
+
+                    <!-- Pillar 3 -->
+                    <div class="glass-panel p-8 rounded-3xl relative">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D9D9D6] text-2xl">
+                                <i class="fa-solid fa-boxes-stacked"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-mono text-[#D9D9D6] uppercase">Pillar 03</span>
+                                <h3 class="font-display text-2xl font-bold text-white">Manage Everything</h3>
+                            </div>
+                        </div>
+                        <p class="text-sm text-[#8B8D93] leading-relaxed mb-6">
+                            Ditch messy paper logs. Keep live control of your stock, sales billing, customer orders, and staff shifts right from your smartphone.
+                        </p>
+                        <div class="grid grid-cols-2 gap-3 text-xs font-medium text-white">
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-barcode text-[#D9D9D6]"></i> Barcode Scanning</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-bell text-[#D9D9D6]"></i> Low Stock Alerts</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-receipt text-[#D9D9D6]"></i> POS & Billing</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-chart-pie text-[#D9D9D6]"></i> Daily Sales Reports</div>
+                        </div>
+                    </div>
+
+                    <!-- Pillar 4 -->
+                    <div class="glass-panel p-8 rounded-3xl relative">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D9D9D6] text-2xl">
+                                <i class="fa-solid fa-microchip"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-mono text-[#D9D9D6] uppercase">Pillar 04</span>
+                                <h3 class="font-display text-2xl font-bold text-white">AI Retail Suite</h3>
+                            </div>
+                        </div>
+                        <p class="text-sm text-[#8B8D93] leading-relaxed mb-6">
+                            Deploy AI virtual trial fitting rooms and intelligent call routing to offer a futuristic experience that leaves local competitors behind.
+                        </p>
+                        <div class="grid grid-cols-2 gap-3 text-xs font-medium text-white">
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-shirt text-[#D9D9D6]"></i> Virtual Trial Room</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-robot text-[#D9D9D6]"></i> Voice AI Agent</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-envelope text-[#D9D9D6]"></i> Automated Reminders</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-star text-[#D9D9D6]"></i> Review Automation</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LIVE INTERACTIVE WHATSAPP BOT DEMO (NO EMOJIS) -->
+            <section class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                <div class="glass-panel p-8 sm:p-12 rounded-3xl border border-white/10">
+                    <div class="text-center max-w-3xl mx-auto mb-12">
+                        <span class="text-xs font-mono text-[#D9D9D6] uppercase tracking-widest block mb-2">SEE IT IN ACTION</span>
+                        <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white">Live WhatsApp Bot Simulator</h2>
+                    </div>
+
+                    <div class="max-w-xl mx-auto bg-[#0C0C0D] p-4 sm:p-6 rounded-2xl border border-white/10">
+                        <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/10">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-[#D9D9D6] font-bold">
+                                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-white uppercase">24/7 AI WhatsApp Assistant</h4>
+                                    <span class="text-[10px] text-[#D9D9D6] font-mono">Online & Instant</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="demo-chat-box" class="h-44 overflow-y-auto space-y-2 p-3 bg-black/40 rounded-xl text-xs font-sans mb-3">
+                            <div class="bg-[#202124] text-white p-2.5 rounded-xl rounded-tl-none max-w-[85%] border border-white/5">
+                                Welcome! Select any option below to see how our WhatsApp automation responds.
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="simulateChat('Hours')" class="px-3 py-1.5 rounded-lg bg-[#202124] hover:bg-white/10 text-white text-xs border border-white/10 transition-colors"><i class="fa-solid fa-clock mr-1 text-[#D9D9D6]"></i> Opening Hours</button>
+                            <button onclick="simulateChat('Book')" class="px-3 py-1.5 rounded-lg bg-[#202124] hover:bg-white/10 text-white text-xs border border-white/10 transition-colors"><i class="fa-solid fa-calendar mr-1 text-[#D9D9D6]"></i> Book Appointment</button>
+                            <button onclick="simulateChat('Quote')" class="px-3 py-1.5 rounded-lg bg-[#202124] hover:bg-white/10 text-white text-xs border border-white/10 transition-colors"><i class="fa-solid fa-file-lines mr-1 text-[#D9D9D6]"></i> Get Rate Card</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- HOW IT WORKS (UPDATED LIMITED SUPPORT) -->
+            <section id="how-it-works" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-24">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-xs font-mono text-[#D9D9D6] uppercase tracking-widest block mb-3">ONBOARDING PROCESS</span>
+                    <h2 class="font-display text-3xl sm:text-5xl font-extrabold text-white mb-4">How It Works</h2>
+                    <p class="text-sm sm:text-base text-[#8B8D93]">We do 100% of the technical setup. No coding or prior tech experience needed.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                    <div class="glass-panel p-6 rounded-2xl text-center">
+                        <span class="text-3xl font-black text-[#D9D9D6] block mb-2 font-display">01</span>
+                        <h3 class="font-bold text-white text-base mb-2">Free Audit</h3>
+                        <p class="text-xs text-[#8B8D93]">15-minute call to identify missed sales in your current setup.</p>
+                    </div>
+                    <div class="glass-panel p-6 rounded-2xl text-center">
+                        <span class="text-3xl font-black text-[#D9D9D6] block mb-2 font-display">02</span>
+                        <h3 class="font-bold text-white text-base mb-2">Custom Strategy</h3>
+                        <p class="text-xs text-[#8B8D93]">We draft the website, AI bot, and inventory layout for you.</p>
+                    </div>
+                    <div class="glass-panel p-6 rounded-2xl text-center">
+                        <span class="text-3xl font-black text-[#D9D9D6] block mb-2 font-display">03</span>
+                        <h3 class="font-bold text-white text-base mb-2">We Build</h3>
+                        <p class="text-xs text-[#8B8D93]">Our team builds and hosts everything with 99.9% uptime SLA.</p>
+                    </div>
+                    <div class="glass-panel p-6 rounded-2xl text-center">
+                        <span class="text-3xl font-black text-[#D9D9D6] block mb-2 font-display">04</span>
+                        <h3 class="font-bold text-white text-base mb-2">Launch</h3>
+                        <p class="text-xs text-[#8B8D93]">Your store goes live online with instant customer automation.</p>
+                    </div>
+                    <div class="glass-panel p-6 rounded-2xl text-center">
+                        <span class="text-3xl font-black text-[#D9D9D6] block mb-2 font-display">05</span>
+                        <h3 class="font-bold text-white text-base mb-2">Limited Support</h3>
+                        <p class="text-xs text-[#8B8D93]">We provide essential maintenance and technical support for your platform.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- COMPARISON TABLE (UPDATED LIMITED SUPPORT) -->
+            <section class="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+                <div class="text-center mb-12">
+                    <span class="text-xs font-mono text-[#D9D9D6] uppercase tracking-widest block mb-2">WHY CHOOSE US</span>
+                    <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white">Traditional Agencies vs BUILD & BEYOND</h2>
+                </div>
+
+                <div class="glass-panel rounded-3xl overflow-hidden border border-white/10">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs sm:text-sm min-w-[500px]">
+                            <thead class="bg-black/40 text-[#8B8D93] uppercase font-mono text-[11px] border-b border-white/10">
+                                <tr>
+                                    <th class="p-4">Feature / Difference</th>
+                                    <th class="p-4 text-center">Other Agencies</th>
+                                    <th class="p-4 text-center text-[#D9D9D6] bg-white/5 font-bold">BUILD & BEYOND</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5 text-white">
+                                <tr>
+                                    <td class="p-4 font-semibold">Scope of Work</td>
+                                    <td class="p-4 text-center text-[#8B8D93]">Just static websites</td>
+                                    <td class="p-4 text-center font-bold text-white bg-white/5">Complete Growth System</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 font-semibold">Lead Handling</td>
+                                    <td class="p-4 text-center text-[#8B8D93]">Passive contact forms</td>
+                                    <td class="p-4 text-center font-bold text-white bg-white/5">24/7 AI Receptionist & WhatsApp Bot</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 font-semibold">Hosting & Uptime</td>
+                                    <td class="p-4 text-center text-[#8B8D93]">Unreliable shared servers</td>
+                                    <td class="p-4 text-center font-bold text-white bg-white/5">99.9% Guaranteed Uptime Cloud</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 font-semibold">Post-Launch Support</td>
+                                    <td class="p-4 text-center text-[#8B8D93]">Charge for every minor edit</td>
+                                    <td class="p-4 text-center font-bold text-white bg-white/5">Limited Support Included</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PRICING SECTION -->
+            <section id="pricing" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-24">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="text-xs font-mono text-[#D9D9D6] uppercase tracking-widest block mb-3">CLEAR & TRANSPARENT</span>
+                    <h2 class="font-display text-3xl sm:text-5xl font-extrabold text-white mb-4">Simple Package Pricing</h2>
+                    <p class="text-sm sm:text-base text-[#8B8D93]">No hidden fees. Full setup and limited support included.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Starter Package -->
+                    <div class="glass-panel p-8 rounded-3xl relative flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs font-mono text-[#D9D9D6] uppercase block mb-2">STARTER DIGITAL</span>
+                            <h3 class="font-display text-2xl font-bold text-white mb-2">Starter Package</h3>
+                            <p class="text-xs text-[#8B8D93] mb-6">Perfect for small local shops & individual practices.</p>
+                            <div class="text-3xl sm:text-4xl font-black text-white mb-6 font-display">
+                                Starting ₹13,000
+                            </div>
+
+                            <ul class="space-y-3 text-xs text-[#8B8D93] mb-8">
+                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Custom High-Speed Website</li>
+                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Google SEO & Maps Integration</li>
+                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Direct WhatsApp Lead Button</li>
+                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> 99.9% Uptime Cloud Hosting</li>
+                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Limited Post-Launch Support</li>
+                            </ul>
+                        </div>
+
+                        <button onclick="openWhatsApp('Starter Package - ₹13,000')" class="btn-secondary w-full py-3 rounded-full text-xs font-bold">Select Starter</button>
+                    </div>
+
+                    <!-- Professional Package -->
+                    <div class="glass-panel p-8 rounded-3xl relative flex flex-col justify-between border-white/30 shadow-2xl">
+                        <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#D9D9D6] text-[#0C0C0D] text-[10px] font-bold px-4 py-1 rounded-full uppercase tracking-wider">
+                            MOST POPULAR
+                        </div>
+
+                        <div>
+                            <span class="text-xs font-mono text-[#D9D9D6] uppercase block mb-2">GROWTH AUTOMATION</span>
+                            <h3 class="font-display text-2xl font-bold text-white mb-2">Professional</h3>
+                            <p class="text-xs text-[#8B8D93] mb-6">Designed for clinics, restaurants, salons & gyms.</p>
+                            <div class="text-3xl sm:text-4xl font-black text-[#D9D9D6] mb-6 font-display">
+                                Starting ₹30,000
+                            </div>
+
+                            <ul class="space-y-3 text-xs text-[#8B8D93] mb-8">
+                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Everything in Starter</li>
+                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> 24/7 WhatsApp AI Assistant</li>
+                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Automated Calendar Slot Booking</li>
+                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Digital Desk Inventory & Billing POS</li>
+                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Review Automation Workflows</li>
+                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Limited Post-Launch Support</li>
+                            </ul>
+                        </div>
+
+                        <button onclick="openWhatsApp('Professional Package - ₹30,000')" class="btn-radiant w-full py-3.5 rounded-full text-xs font-bold">Claim Professional</button>
+                    </div>
+
+                    <!-- Custom Enterprise -->
+                    <div class="glass-panel p-8 rounded-3xl relative flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs font-mono text-[#D9D9D6] uppercase block mb-2">ENTERPRISE AI</span>
+                            <h3 class="font-display text-2xl font-bold text-white mb-2">Custom System</h3>
+                            <p class="text-xs text-[#8B8D93] mb-6">Multi-chain brands, academies, and large stores.</p>
+                            <div class="text-3xl sm:text-4xl font-black text-white mb-6 font-display">
+                                Custom Quote
+                            </div>
+
+                            <ul class="space-y-3 text-xs text-[#8B8D93] mb-8">
+                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> AI Voice Phone Receptionist</li>
+                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> AI Virtual Trial Room Engine</li>
+                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Custom API & CRM Software</li>
+                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Dedicated Priority Support Lead</li>
+                            </ul>
+                        </div>
+
+                        <button onclick="openWhatsApp('Enterprise Custom Quote')" class="btn-secondary w-full py-3 rounded-full text-xs font-bold">Request Enterprise Quote</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ SECTION -->
+            <section class="py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <span class="text-xs font-mono text-[#D9D9D6] uppercase tracking-widest block mb-2">COMMON QUESTIONS</span>
+                    <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white">Frequently Asked Questions</h2>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="glass-panel p-5 rounded-2xl cursor-pointer" onclick="toggleFaq(this)">
+                        <div class="flex items-center justify-between font-bold text-sm text-white">
+                            <span>How long does it take to launch my website and AI system?</span>
+                            <i class="fa-solid fa-chevron-down text-[#D9D9D6] text-xs"></i>
+                        </div>
+                        <p class="text-xs text-[#8B8D93] mt-3 hidden">
+                            Most custom website and WhatsApp automation builds go live within 5 to 7 days. We handle everything end-to-end with zero downtime for your store.
+                        </p>
+                    </div>
+
+                    <div class="glass-panel p-5 rounded-2xl cursor-pointer" onclick="toggleFaq(this)">
+                        <div class="flex items-center justify-between font-bold text-sm text-white">
+                            <span>Do I need technical skills to run this?</span>
+                            <i class="fa-solid fa-chevron-down text-[#D9D9D6] text-xs"></i>
+                        </div>
+                        <p class="text-xs text-[#8B8D93] mt-3 hidden">
+                            Zero technical knowledge required. Everything is managed easily from your phone, and our team provides training and limited technical support.
+                        </p>
+                    </div>
+
+                    <div class="glass-panel p-5 rounded-2xl cursor-pointer" onclick="toggleFaq(this)">
+                        <div class="flex items-center justify-between font-bold text-sm text-white">
+                            <span>How does the 24/7 WhatsApp AI Assistant work?</span>
+                            <i class="fa-solid fa-chevron-down text-[#D9D9D6] text-xs"></i>
+                        </div>
+                        <p class="text-xs text-[#8B8D93] mt-3 hidden">
+                            It connects directly to your WhatsApp business account to automatically answer inquiries, share price lists, and schedule bookings.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FINAL CALL TO ACTION -->
+            <section class="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-center">
+                <div class="glass-panel p-10 sm:p-16 rounded-3xl border border-white/20 relative overflow-hidden">
+                    <span class="text-xs font-mono text-[#D9D9D6] uppercase tracking-widest block mb-4">TAKE THE NEXT STEP</span>
+                    <h2 class="font-display text-4xl sm:text-6xl font-black text-white mb-6">
+                        Ready To Grow Your Business?
+                    </h2>
+                    <p class="text-sm sm:text-base text-[#8B8D93] max-w-xl mx-auto mb-8">
+                        Book a 15-minute business audit with Sidhh Rana or Atharv Malik. We'll show you exactly how to automate your leads.
+                    </p>
+                    <button onclick="openWhatsApp('Final Banner CTA')" class="btn-radiant px-10 py-5 rounded-full text-base font-bold inline-flex items-center gap-3">
+                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                        <span>Let's Build Something Amazing</span>
+                    </button>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- VIEW 2: DEDICATED SEPARATE FOUNDERS PAGE VIEW -->
+        <!-- ========================================================= -->
+        <div id="founders-view" class="hidden px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto pt-6 pb-20">
+            <!-- Breadcrumb Navigation -->
+            <div class="mb-8">
+                <button onclick="switchView('home')" class="text-xs font-mono text-[#D9D9D6] hover:underline inline-flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Main Platform
+                </button>
+            </div>
+
+            <!-- Header Title -->
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-xs font-mono text-[#8B8D93] uppercase tracking-widest block mb-3">THE ARCHITECTS OF BUILD & BEYOND</span>
+                <h1 class="font-display text-4xl sm:text-6xl font-black text-white mb-6">
+                    Meet Our Founders
+                </h1>
+                <p class="text-base sm:text-lg text-[#8B8D93] leading-relaxed">
+                    BUILD & BEYOND was founded with a singular mission: empower local store owners, practice directors, and entrepreneurs with enterprise-grade tech without the complexity.
+                </p>
+            </div>
+
+            <!-- Founders Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                <!-- Sidhh Rana -->
+                <div class="glass-panel p-8 rounded-3xl border border-white/10 flex flex-col justify-between">
+                    <div>
+                        <div class="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center font-display font-extrabold text-white text-2xl mb-6 shadow-lg border border-white/10">
+                            SR
+                        </div>
+                        <span class="text-xs font-mono text-[#D9D9D6] uppercase block mb-1">CO-FOUNDER & TECH ARCHITECT</span>
+                        <h2 class="font-display text-2xl font-bold text-white mb-4">Sidhh Rana</h2>
+                        <p class="text-xs sm:text-sm text-[#8B8D93] leading-relaxed mb-6">
+                            "Local store owners were losing lakhs every month to missed phone calls, slow response times, and outdated manual logbooks. We engineered Build & Beyond to bring enterprise AI speed and custom software directly to neighborhood businesses."
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-xs text-white font-medium"><i class="fa-solid fa-code text-[#D9D9D6] mr-2"></i> System Architecture & AI</span>
+                        <button onclick="openWhatsApp('Founders Page - Sidhh Rana')" class="btn-secondary px-4 py-2 rounded-full text-xs font-bold">Connect</button>
+                    </div>
+                </div>
+
+                <!-- Atharv Malik -->
+                <div class="glass-panel p-8 rounded-3xl border border-white/10 flex flex-col justify-between">
+                    <div>
+                        <div class="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center font-display font-extrabold text-white text-2xl mb-6 shadow-lg border border-white/10">
+                            AM
+                        </div>
+                        <span class="text-xs font-mono text-[#D9D9D6] uppercase block mb-1">CO-FOUNDER & GROWTH LEAD</span>
+                        <h2 class="font-display text-2xl font-bold text-white mb-4">Atharv Malik</h2>
+                        <p class="text-xs sm:text-sm text-[#8B8D93] leading-relaxed mb-6">
+                            "Technology shouldn't confuse business owners—it should make them money. We handle 100% of the tech design, deployment, hosting, and limited ongoing maintenance so you can focus strictly on growing your customer base."
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-xs text-white font-medium"><i class="fa-solid fa-chart-line text-[#D9D9D6] mr-2"></i> Growth Strategy & ROI</span>
+                        <button onclick="openWhatsApp('Founders Page - Atharv Malik')" class="btn-secondary px-4 py-2 rounded-full text-xs font-bold">Connect</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Founders Story Banner -->
+            <div class="glass-panel p-8 sm:p-12 rounded-3xl text-center border border-white/10">
+                <h3 class="font-display text-2xl sm:text-3xl font-bold text-white mb-4">Our Core Philosophy</h3>
+                <p class="text-xs sm:text-sm text-[#8B8D93] max-w-2xl mx-auto leading-relaxed mb-8">
+                    We believe every local store, clinic, and restaurant deserves the same technological leverage used by massive corporate chains—delivered with zero technical stress and transparent pricing.
+                </p>
+                <button onclick="openWhatsApp('Founders Direct Meeting', 'Hi Sidhh and Atharv, I want to book a meeting to discuss growing my business')" class="btn-radiant px-8 py-4 rounded-full text-sm font-bold inline-flex items-center gap-3">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>Schedule Meeting With Founders</span>
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10 py-10 px-4 sm:px-6 text-xs text-[#8B8D93] relative z-10 bg-[#161618]">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <span class="font-bold text-white text-sm tracking-tight">BUILD & BEYOND</span>
+            </div>
+
+            <div class="font-mono text-center text-[11px]">
+                © 2026 BUILD & BEYOND. Founded by Sidhh Rana & Atharv Malik.
+            </div>
+
+            <div class="flex gap-6 text-white font-medium">
+                <a href="#businesses" onclick="switchView('home')" class="hover:text-[#D9D9D6]">Industries</a>
+                <a href="#outcomes" onclick="switchView('home')" class="hover:text-[#D9D9D6]">Solutions</a>
+                <a href="#" onclick="switchView('founders'); return false;" class="hover:text-[#D9D9D6]">Founders</a>
+                <a href="#pricing" onclick="switchView('home')" class="hover:text-[#D9D9D6]">Pricing</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Direct WhatsApp Booking Handler (+91 98102 52596)
+        function openWhatsApp(topic, customMessage) {
+            try {
+                var targetPhone = "919810252596";
+                var defaultText = "Hi, I checked out your website and I want a free meeting to discuss growing my business";
+                var textToSend = customMessage ? customMessage : defaultText;
+                
+                if (topic) {
+                    textToSend += " (" + topic + ")";
+                }
+
+                var waUrl = "https://wa.me/" + targetPhone + "?text=" + encodeURIComponent(textToSend);
+                window.open(waUrl, '_blank');
+            } catch (err) {
+                console.error("WhatsApp redirect error:", err);
+            }
+        }
+
+        // View Switcher (Home vs Dedicated Founders Page)
+        function switchView(viewName) {
+            try {
+                const homeView = document.getElementById('home-view');
+                const foundersView = document.getElementById('founders-view');
+                if (!homeView || !foundersView) return;
+
+                if (viewName === 'founders') {
+                    homeView.classList.add('hidden');
+                    foundersView.classList.remove('hidden');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    foundersView.classList.add('hidden');
+                    homeView.classList.remove('hidden');
+                }
+            } catch (err) {
+                console.error("View switch error:", err);
+            }
+        }
+
+        // Nav Overlay Menu Toggle
+        function toggleNavOverlay() {
+            try {
+                const overlay = document.getElementById('nav-overlay');
+                const icon = document.getElementById('hamburger-icon');
+                if (!overlay || !icon) return;
+
+                if (overlay.classList.contains('hidden')) {
+                    overlay.classList.remove('hidden');
+                    overlay.classList.add('flex');
+                    icon.className = 'fa-solid fa-xmark text-sm';
+                } else {
+                    overlay.classList.add('hidden');
+                    overlay.classList.remove('flex');
+                    icon.className = 'fa-solid fa-bars text-sm';
+                }
+            } catch (err) {
+                console.error("Nav overlay error:", err);
+            }
+        }
+
+        // FAQ Accordion Toggle
+        function toggleFaq(element) {
+            try {
+                var text = element.querySelector('p');
+                var icon = element.querySelector('i');
+                if (text) {
+                    text.classList.toggle('hidden');
+                }
+                if (icon) {
+                    icon.classList.toggle('rotate-180');
+                }
+            } catch (err) {
+                console.error("FAQ toggle error:", err);
+            }
+        }
+
+        // WhatsApp Chat Demo Simulation (Clean Text)
+        function simulateChat(type) {
+            try {
+                var chatBox = document.getElementById('demo-chat-box');
+                if (!chatBox) return;
+
+                var userText = "";
+                var replyText = "";
+
+                if (type === 'Hours') {
+                    userText = "What are your opening hours?";
+                    replyText = "We are open Monday to Saturday, 10:00 AM – 8:30 PM!";
+                } else if (type === 'Book') {
+                    userText = "I want to book an appointment slot";
+                    replyText = "Great! Open slots tomorrow: 2:30 PM and 5:00 PM. Reply 1 or 2 to confirm.";
+                } else if (type === 'Quote') {
+                    userText = "Send me your price menu PDF";
+                    replyText = "Generating your custom rate card... Here is the rate card for store digitization.";
+                }
+
+                chatBox.innerHTML += `
+                    <div class="flex justify-end my-2">
+                        <div class="bg-white/10 text-white p-2 rounded-xl rounded-tr-none text-xs max-w-[85%] border border-white/10">
+                            ${userText}
+                        </div>
+                    </div>
+                `;
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+                setTimeout(function() {
+                    chatBox.innerHTML += `
+                        <div class="flex justify-start my-2">
+                            <div class="bg-[#202124] text-white p-2.5 rounded-xl rounded-tl-none text-xs max-w-[85%] border border-white/10">
+                                ${replyText}
+                            </div>
+                        </div>
+                    `;
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }, 300);
+            } catch (err) {
+                console.error("Chat simulation error:", err);
+            }
+        }
+    </script>
+</body>
+</html>
