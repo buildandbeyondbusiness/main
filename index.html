@@ -53,11 +53,16 @@
             --border-glow: rgba(255, 255, 255, 0.08);
         }
 
+        html, body {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+        }
+
         body {
             background-color: var(--bg-main);
             color: var(--text-main);
             font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden;
             letter-spacing: -0.015em;
             -webkit-tap-highlight-color: transparent;
         }
@@ -77,18 +82,12 @@
                 radial-gradient(circle at 50% 85%, rgba(255, 255, 255, 0.03) 0%, transparent 55%);
         }
 
-        /* Hero Radiant Text */
-        .hero-radiant-text {
-            background: linear-gradient(135deg, #F5F5F4 0%, #D9D9D6 50%, #8B8D93 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
         /* Hero Radiant Button */
         .btn-radiant {
             background: #D9D9D6;
             color: #0C0C0D;
             font-weight: 700;
+            min-height: 48px;
             box-shadow: 0 4px 20px rgba(217, 217, 214, 0.15);
             transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -118,6 +117,7 @@
             background: rgba(255, 255, 255, 0.05);
             color: var(--text-main);
             border: 1px solid var(--border-glow);
+            min-height: 48px;
             transition: all 0.25s ease;
         }
 
@@ -127,9 +127,144 @@
             color: var(--primary);
         }
 
+        /* SPLIT FLAP COMPONENT STYLES - FLUID RESPONSIVE CLAMPS FOR PHONE VIEWING */
+        .split-flap-container {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(2px, 1.2vw, 10px);
+            font-family: 'SFMono-Regular', 'Roboto Mono', 'Cascadia Code', 'Plus Jakarta Sans', monospace;
+            user-select: none;
+            flex-wrap: nowrap;
+            width: 100%;
+            max-width: 100%;
+            padding: 8px 0;
+            overflow: hidden;
+        }
+
+        .split-flap-tile {
+            position: relative;
+            flex-shrink: 1;
+            width: clamp(16px, 5.5vw, 46px);
+            height: clamp(28px, 8.5vw, 72px);
+            font-size: clamp(14px, 4.8vw, 42px);
+            font-weight: 800;
+            border-radius: clamp(4px, 1.2vw, 10px);
+            background: #161618;
+            color: #F5F5F4;
+            perspective: 520px;
+            overflow: hidden;
+            box-shadow: 
+                0 0.035em 0.08em rgba(255, 255, 255, 0.08) inset,
+                0 -0.05em 0.1em rgba(0, 0, 0, 0.38) inset,
+                0 0.16em 0.38em rgba(0, 0, 0, 0.5);
+        }
+
+        .split-flap-tile::before {
+            content: '';
+            position: absolute;
+            z-index: 8;
+            top: calc(50% - 0.5px);
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2) 18%,
+                rgba(0, 0, 0, 0.8) 50%,
+                rgba(255, 255, 255, 0.2) 82%,
+                transparent
+            );
+            pointer-events: none;
+        }
+
+        .split-flap-tile::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 9;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: inherit;
+            pointer-events: none;
+        }
+
+        .split-flap-half,
+        .split-flap-flap {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            overflow: hidden;
+            background: #1a1b1d;
+            backface-visibility: hidden;
+        }
+
+        .split-flap-half--top,
+        .split-flap-flap--front {
+            top: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 34%), #202124;
+        }
+
+        .split-flap-half--bottom,
+        .split-flap-flap--back {
+            bottom: 0;
+            background: linear-gradient(0deg, rgba(255, 255, 255, 0.05), transparent 38%), #161618;
+        }
+
+        .split-flap-char {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 200%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #F5F5F4;
+            text-shadow: 0 0.025em 0 rgba(255, 255, 255, 0.2), 0 0.09em 0.16em rgba(0, 0, 0, 0.6);
+        }
+
+        .split-flap-half--top .split-flap-char,
+        .split-flap-flap--front .split-flap-char {
+            top: 0;
+        }
+
+        .split-flap-half--bottom .split-flap-char,
+        .split-flap-flap--back .split-flap-char {
+            bottom: 0;
+        }
+
+        .split-flap-flap {
+            z-index: 6;
+            will-change: transform, filter;
+            transform-style: preserve-3d;
+        }
+
+        .split-flap-flap--front {
+            transform-origin: center bottom;
+            animation: split-flap-front 0.12s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        .split-flap-flap--back {
+            transform-origin: center top;
+            transform: rotateX(90deg);
+            animation: split-flap-back 0.12s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        @keyframes split-flap-front {
+            0% { transform: rotateX(0deg); filter: brightness(1.1); }
+            100% { transform: rotateX(-90deg); filter: brightness(0.5); }
+        }
+
+        @keyframes split-flap-back {
+            0%, 45% { transform: rotateX(90deg); filter: brightness(0.58); }
+            100% { transform: rotateX(0deg); filter: brightness(1); }
+        }
+
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
+            width: 6px;
+            height: 6px;
         }
         ::-webkit-scrollbar-track {
             background: #0C0C0D;
@@ -143,26 +278,27 @@
         }
     </style>
 </head>
-<body class="relative antialiased selection:bg-[#D9D9D6] selection:text-[#0C0C0D] min-h-screen flex flex-col justify-between">
+<body class="relative antialiased selection:bg-[#D9D9D6] selection:text-[#0C0C0D] min-h-screen flex flex-col justify-between overflow-x-hidden">
 
     <!-- Aurora Atmosphere Background -->
-    <div class="aurora-bg"></div>
+    <div class="aurora-bg">
+        <canvas id="aurora-webgl-canvas" class="w-full h-full block absolute inset-0 opacity-50 pointer-events-none"></canvas>
+    </div>
 
-    <!-- FLOATING TRANSLUCENT HEADER -->
-    <header class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-5xl bg-[#161618]/85 backdrop-blur-xl border border-white/10 rounded-full px-5 py-3 shadow-2xl flex items-center justify-between">
+    <header class="fixed top-3 sm:top-4 left-1/2 -translate-x-1/2 z-50 w-[94%] max-w-5xl bg-[#161618]/90 backdrop-blur-xl border border-white/10 rounded-full px-3.5 sm:px-5 py-2.5 sm:py-3 shadow-2xl flex items-center justify-between">
         
         <!-- Hamburger Menu Button (Left) -->
-        <button onclick="toggleNavOverlay()" class="w-10 h-10 rounded-full bg-[#202124] border border-white/10 flex items-center justify-center text-[#F5F5F4] hover:border-[#D9D9D6] transition-colors">
+        <button onclick="toggleNavOverlay()" class="w-10 h-10 rounded-full bg-[#202124] border border-white/10 flex items-center justify-center text-[#F5F5F4] hover:border-[#D9D9D6] active:scale-95 transition-all" aria-label="Toggle Navigation">
             <i id="hamburger-icon" class="fa-solid fa-bars text-sm"></i>
         </button>
 
         <!-- Centered Brand Title -->
-        <a href="#" onclick="switchView('home'); return false;" class="font-display font-black text-lg sm:text-xl tracking-tight text-[#F5F5F4] hover:text-[#D9D9D6] transition-colors">
+        <a href="#" onclick="switchView('home'); return false;" class="font-display font-black text-base sm:text-xl tracking-tight text-[#F5F5F4] hover:text-[#D9D9D6] transition-colors">
             BUILD & BEYOND
         </a>
 
         <!-- Header CTA Button (Right) -->
-        <button onclick="openWhatsApp('Floating Header Audit')" class="btn-radiant px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2">
+        <button onclick="openWhatsApp('Floating Header Audit')" class="btn-radiant px-3.5 sm:px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2 active:scale-95 transition-transform">
             <i class="fa-brands fa-whatsapp text-sm"></i>
             <span class="hidden sm:inline">Get Free Audit</span>
             <span class="sm:hidden">Audit</span>
@@ -172,13 +308,12 @@
     <!-- NAVIGATION OVERLAY MENU -->
     <div id="nav-overlay" class="fixed inset-0 bg-[#0C0C0D]/95 backdrop-blur-2xl z-40 hidden flex-col justify-center items-center px-6 transition-all duration-300">
         <div class="space-y-6 text-center">
-            <a href="#businesses" onclick="toggleNavOverlay(); switchView('home');" class="block text-2xl font-bold text-[#F5F5F4] hover:text-[#D9D9D6] transition-colors">Who We Help</a>
-            <a href="#outcomes" onclick="toggleNavOverlay(); switchView('home');" class="block text-2xl font-bold text-[#F5F5F4] hover:text-[#D9D9D6] transition-colors">Solutions</a>
-            <a href="#how-it-works" onclick="toggleNavOverlay(); switchView('home');" class="block text-2xl font-bold text-[#F5F5F4] hover:text-[#D9D9D6] transition-colors">How It Works</a>
-            <a href="#pricing" onclick="toggleNavOverlay(); switchView('home');" class="block text-2xl font-bold text-[#F5F5F4] hover:text-[#D9D9D6] transition-colors">Pricing</a>
-            <a href="#" onclick="toggleNavOverlay(); switchView('founders'); return false;" class="block text-2xl font-bold text-[#D9D9D6] hover:text-[#F5F5F4] transition-colors">Founders & Story</a>
+            <a href="#businesses" onclick="toggleNavOverlay();" class="block text-xl sm:text-2xl font-bold text-[#F5F5F4] hover:text-[#D9D9D6] transition-colors py-1">Who We Help</a>
+            <a href="#outcomes" onclick="toggleNavOverlay();" class="block text-xl sm:text-2xl font-bold text-[#F5F5F4] hover:text-[#D9D9D6] transition-colors py-1">Solutions</a>
+            <a href="#how-it-works" onclick="toggleNavOverlay();" class="block text-xl sm:text-2xl font-bold text-[#F5F5F4] hover:text-[#D9D9D6] transition-colors py-1">How It Works</a>
+            <a href="#pricing" onclick="toggleNavOverlay();" class="block text-xl sm:text-2xl font-bold text-[#F5F5F4] hover:text-[#D9D9D6] transition-colors py-1">Pricing</a>
         </div>
-        <div class="mt-12">
+        <div class="mt-10">
             <button onclick="toggleNavOverlay(); openWhatsApp('Menu Overlay CTA');" class="btn-radiant px-8 py-4 rounded-full text-sm font-bold flex items-center gap-3">
                 <i class="fa-brands fa-whatsapp text-lg"></i>
                 <span>Get Free Business Audit</span>
@@ -187,51 +322,47 @@
     </div>
 
     <!-- MAIN CONTENT CONTAINER -->
-    <main class="relative z-10 pt-28 pb-16 flex-grow">
+    <main class="relative z-10 pt-24 sm:pt-28 pb-16 flex-grow">
 
-        <!-- ========================================================= -->
-        <!-- VIEW 1: HOME PAGE VIEW -->
-        <!-- ========================================================= -->
         <div id="home-view" class="block">
             
             <!-- HERO SECTION -->
-            <section class="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-center pt-8 sm:pt-16 pb-16">
-                <h1 class="font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-[#F5F5F4] leading-[1.05] max-w-5xl mx-auto mb-8">
-                    Grow Your Business.<br>
-                    <span class="hero-radiant-text">We’ll Handle The Technology.</span>
-                </h1>
+            <section class="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-center pt-4 sm:pt-16 pb-12 sm:pb-16">
+                <!-- ParticleText Component Container for Headline -->
+                <div id="particle-text-container" class="w-full h-36 sm:h-60 md:h-72 lg:h-80 mb-6 sm:mb-8 relative flex items-center justify-center overflow-hidden cursor-pointer touch-none" title="Hover or touch to scatter particles">
+                    <h1 class="sr-only">Grow Your Business. We’ll Handle The Technology.</h1>
+                </div>
 
                 <!-- Subheading -->
-                <p class="text-base sm:text-lg md:text-xl text-[#8B8D93] max-w-3xl mx-auto font-normal leading-relaxed mb-10">
+                <p class="text-sm sm:text-lg md:text-xl text-[#8B8D93] max-w-3xl mx-auto font-normal leading-relaxed mb-8 sm:mb-10 px-2">
                     High-converting Websites, AI Receptionists, WhatsApp Automation, and Custom Software that bring you more customers, save hours every week, and scale your revenue.
                 </p>
 
                 <!-- CTA Group -->
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md sm:max-w-none mx-auto mb-16">
-                    <button onclick="openWhatsApp('Hero Primary Audit CTA')" class="btn-radiant w-full sm:w-auto px-8 py-4 rounded-full text-sm sm:text-base font-bold flex items-center justify-center gap-3">
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-md sm:max-w-none mx-auto mb-12 sm:mb-16">
+                    <button onclick="openWhatsApp('Hero Primary Audit CTA')" class="btn-radiant w-full sm:w-auto px-8 py-4 rounded-full text-sm sm:text-base font-bold flex items-center justify-center gap-3 active:scale-95 transition-transform">
                         <i class="fa-brands fa-whatsapp text-xl"></i>
                         <span>Get Free Business Audit</span>
                     </button>
-                    <a href="#businesses" class="btn-secondary w-full sm:w-auto px-8 py-4 rounded-full text-sm sm:text-base font-semibold flex items-center justify-center gap-2">
+                    <a href="#businesses" class="btn-secondary w-full sm:w-auto px-8 py-4 rounded-full text-sm sm:text-base font-semibold flex items-center justify-center gap-2 active:scale-95 transition-transform">
                         <span>Explore Industry Solutions</span>
                         <i class="fa-solid fa-arrow-down text-xs"></i>
                     </a>
                 </div>
 
-                <!-- STATS BAR (REMOVED BUSINESSES DIGITIZED & REVENUE GENERATED) -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto pt-8 border-t border-white/10">
-                    <div class="p-4 rounded-2xl bg-[#161618]/60 border border-white/5 text-center">
-                        <div class="font-display text-3xl sm:text-4xl font-black text-[#F5F5F4] mb-1">99.9%</div>
-                        <div class="text-xs text-[#8B8D93] font-medium uppercase tracking-wider">Hosting & Uptime SLA</div>
+                <!-- STATS BAR -->
+                <div class="grid grid-cols-2 gap-3 sm:gap-4 max-w-2xl mx-auto pt-6 sm:pt-8 border-t border-white/10">
+                    <div class="p-3.5 sm:p-4 rounded-2xl bg-[#161618]/60 border border-white/5 text-center">
+                        <div class="font-display text-2xl sm:text-4xl font-black text-[#F5F5F4] mb-1">99.9%</div>
+                        <div class="text-[10px] sm:text-xs text-[#8B8D93] font-medium uppercase tracking-wider">Hosting & Uptime SLA</div>
                     </div>
-                    <div class="p-4 rounded-2xl bg-[#161618]/60 border border-white/5 text-center">
-                        <div class="font-display text-3xl sm:text-4xl font-black text-[#D9D9D6] mb-1">24/7</div>
-                        <div class="text-xs text-[#8B8D93] font-medium uppercase tracking-wider">AI Lead Automation</div>
+                    <div class="p-3.5 sm:p-4 rounded-2xl bg-[#161618]/60 border border-white/5 text-center">
+                        <div class="font-display text-2xl sm:text-4xl font-black text-[#D9D9D6] mb-1">24/7</div>
+                        <div class="text-[10px] sm:text-xs text-[#8B8D93] font-medium uppercase tracking-wider">AI Lead Automation</div>
                     </div>
                 </div>
             </section>
 
-            <!-- BUSINESSES WE HELP SECTION (NO EMOJIS) -->
             <section id="businesses" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-24">
                 <div class="text-center max-w-3xl mx-auto mb-16">
                     <span class="text-xs font-mono text-[#D9D9D6] uppercase tracking-widest block mb-3">TAILORED INDUSTRY SOLUTIONS</span>
@@ -241,7 +372,6 @@
 
                 <!-- Industry Grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <!-- Dentists -->
                     <div class="glass-panel p-6 rounded-2xl relative">
                         <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D9D9D6] mb-4">
                             <i class="fa-solid fa-tooth text-xl"></i>
@@ -257,7 +387,6 @@
                         </div>
                     </div>
 
-                    <!-- Restaurants -->
                     <div class="glass-panel p-6 rounded-2xl relative">
                         <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D9D9D6] mb-4">
                             <i class="fa-solid fa-utensils text-xl"></i>
@@ -273,7 +402,6 @@
                         </div>
                     </div>
 
-                    <!-- Gyms -->
                     <div class="glass-panel p-6 rounded-2xl relative">
                         <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D9D9D6] mb-4">
                             <i class="fa-solid fa-dumbbell text-xl"></i>
@@ -289,7 +417,6 @@
                         </div>
                     </div>
 
-                    <!-- Salons -->
                     <div class="glass-panel p-6 rounded-2xl relative">
                         <div class="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D9D9D6] mb-4">
                             <i class="fa-solid fa-scissors text-xl"></i>
@@ -308,114 +435,109 @@
             </section>
 
             <!-- FOUR GROWTH PILLARS -->
-            <section id="outcomes" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-24">
-                <div class="text-center max-w-3xl mx-auto mb-16">
+            <section id="outcomes" class="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-24">
+                <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
                     <span class="text-xs font-mono text-[#D9D9D6] uppercase tracking-widest block mb-3">THE GROWTH ARCHITECTURE</span>
-                    <h2 class="font-display text-3xl sm:text-5xl font-extrabold text-[#F5F5F4] mb-4">Four Pillars of Business Digitization</h2>
-                    <p class="text-sm sm:text-base text-[#8B8D93]">We build complete, automated revenue-generating systems for your business.</p>
+                    <h2 class="font-display text-2xl sm:text-5xl font-extrabold text-[#F5F5F4] mb-4">Four Pillars of Business Digitization</h2>
+                    <p class="text-xs sm:text-base text-[#8B8D93]">We build complete, automated revenue-generating systems for your business.</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Pillar 1 -->
-                    <div class="glass-panel p-8 rounded-3xl relative">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+                    <div class="glass-panel p-6 sm:p-8 rounded-3xl relative">
                         <div class="flex items-center gap-4 mb-6">
-                            <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D9D9D6] text-2xl">
+                            <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D9D9D6] text-xl sm:text-2xl">
                                 <i class="fa-solid fa-bullseye"></i>
                             </div>
                             <div>
-                                <span class="text-xs font-mono text-[#D9D9D6] uppercase">Pillar 01</span>
-                                <h3 class="font-display text-2xl font-bold text-white">Get More Customers</h3>
+                                <span class="text-[10px] sm:text-xs font-mono text-[#D9D9D6] uppercase">Pillar 01</span>
+                                <h3 class="font-display text-xl sm:text-2xl font-bold text-white">Get More Customers</h3>
                             </div>
                         </div>
-                        <p class="text-sm text-[#8B8D93] leading-relaxed mb-6">
+                        <p class="text-xs sm:text-sm text-[#8B8D93] leading-relaxed mb-6">
                             High-speed storefronts paired with local Google Maps optimization to ensure local buyers find and trust you first.
                         </p>
-                        <div class="grid grid-cols-2 gap-3 text-xs font-medium text-white">
-                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-globe text-[#D9D9D6]"></i> Custom Website</div>
-                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-magnifying-glass text-[#D9D9D6]"></i> Google SEO</div>
-                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-location-dot text-[#D9D9D6]"></i> Google Maps Rank</div>
-                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-server text-[#D9D9D6]"></i> 99.9% Uptime Hosting</div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 text-xs font-medium text-white">
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-globe text-[#D9D9D6] shrink-0"></i> Custom Website</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-magnifying-glass text-[#D9D9D6] shrink-0"></i> Google SEO</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-location-dot text-[#D9D9D6] shrink-0"></i> Google Maps Rank</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-server text-[#D9D9D6] shrink-0"></i> 99.9% Uptime Hosting</div>
                         </div>
                     </div>
 
-                    <!-- Pillar 2 -->
-                    <div class="glass-panel p-8 rounded-3xl relative">
+                    <div class="glass-panel p-6 sm:p-8 rounded-3xl relative">
                         <div class="flex items-center gap-4 mb-6">
-                            <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D9D9D6] text-2xl">
+                            <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D9D9D6] text-xl sm:text-2xl">
                                 <i class="fa-solid fa-clock"></i>
                             </div>
                             <div>
-                                <span class="text-xs font-mono text-[#D9D9D6] uppercase">Pillar 02</span>
-                                <h3 class="font-display text-2xl font-bold text-white">Save Staff Hours</h3>
+                                <span class="text-[10px] sm:text-xs font-mono text-[#D9D9D6] uppercase">Pillar 02</span>
+                                <h3 class="font-display text-xl sm:text-2xl font-bold text-white">Save Staff Hours</h3>
                             </div>
                         </div>
-                        <p class="text-sm text-[#8B8D93] leading-relaxed mb-6">
+                        <p class="text-xs sm:text-sm text-[#8B8D93] leading-relaxed mb-6">
                             Automate inquiry replies, appointment slots, and pricing quotes so your front desk can focus entirely on serving in-store clients.
                         </p>
-                        <div class="grid grid-cols-2 gap-3 text-xs font-medium text-white">
-                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-headset text-[#D9D9D6]"></i> AI Phone Receptionist</div>
-                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-brands fa-whatsapp text-[#D9D9D6]"></i> WhatsApp Bot</div>
-                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-calendar-check text-[#D9D9D6]"></i> Auto Slot Booking</div>
-                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-file-invoice text-[#D9D9D6]"></i> Instant PDF Quotes</div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 text-xs font-medium text-white">
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-headset text-[#D9D9D6] shrink-0"></i> AI Phone Receptionist</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-brands fa-whatsapp text-[#D9D9D6] shrink-0"></i> WhatsApp Bot</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-calendar-check text-[#D9D9D6] shrink-0"></i> Auto Slot Booking</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-file-invoice text-[#D9D9D6] shrink-0"></i> Instant PDF Quotes</div>
                         </div>
                     </div>
 
-                    <!-- Pillar 3 -->
-                    <div class="glass-panel p-8 rounded-3xl relative">
+                    <div class="glass-panel p-6 sm:p-8 rounded-3xl relative">
                         <div class="flex items-center gap-4 mb-6">
-                            <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D9D9D6] text-2xl">
+                            <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D9D9D6] text-xl sm:text-2xl">
                                 <i class="fa-solid fa-boxes-stacked"></i>
                             </div>
                             <div>
-                                <span class="text-xs font-mono text-[#D9D9D6] uppercase">Pillar 03</span>
-                                <h3 class="font-display text-2xl font-bold text-white">Manage Everything</h3>
+                                <span class="text-[10px] sm:text-xs font-mono text-[#D9D9D6] uppercase">Pillar 03</span>
+                                <h3 class="font-display text-xl sm:text-2xl font-bold text-white">Manage Everything</h3>
                             </div>
                         </div>
-                        <p class="text-sm text-[#8B8D93] leading-relaxed mb-6">
+                        <p class="text-xs sm:text-sm text-[#8B8D93] leading-relaxed mb-6">
                             Ditch messy paper logs. Keep live control of your stock, sales billing, customer orders, and staff shifts right from your smartphone.
                         </p>
-                        <div class="grid grid-cols-2 gap-3 text-xs font-medium text-white">
-                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-barcode text-[#D9D9D6]"></i> Barcode Scanning</div>
-                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-bell text-[#D9D9D6]"></i> Low Stock Alerts</div>
-                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-receipt text-[#D9D9D6]"></i> POS & Billing</div>
-                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-chart-pie text-[#D9D9D6]"></i> Daily Sales Reports</div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 text-xs font-medium text-white">
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-barcode text-[#D9D9D6] shrink-0"></i> Barcode Scanning</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-bell text-[#D9D9D6] shrink-0"></i> Low Stock Alerts</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-receipt text-[#D9D9D6] shrink-0"></i> POS & Billing</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-chart-pie text-[#D9D9D6] shrink-0"></i> Daily Sales Reports</div>
                         </div>
                     </div>
 
-                    <!-- Pillar 4 -->
-                    <div class="glass-panel p-8 rounded-3xl relative">
+                    <div class="glass-panel p-6 sm:p-8 rounded-3xl relative">
                         <div class="flex items-center gap-4 mb-6">
-                            <div class="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D9D9D6] text-2xl">
+                            <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D9D9D6] text-xl sm:text-2xl">
                                 <i class="fa-solid fa-microchip"></i>
                             </div>
                             <div>
-                                <span class="text-xs font-mono text-[#D9D9D6] uppercase">Pillar 04</span>
-                                <h3 class="font-display text-2xl font-bold text-white">AI Retail Suite</h3>
+                                <span class="text-[10px] sm:text-xs font-mono text-[#D9D9D6] uppercase">Pillar 04</span>
+                                <h3 class="font-display text-xl sm:text-2xl font-bold text-white">AI Retail Suite</h3>
                             </div>
                         </div>
-                        <p class="text-sm text-[#8B8D93] leading-relaxed mb-6">
+                        <p class="text-xs sm:text-sm text-[#8B8D93] leading-relaxed mb-6">
                             Deploy AI virtual trial fitting rooms and intelligent call routing to offer a futuristic experience that leaves local competitors behind.
                         </p>
-                        <div class="grid grid-cols-2 gap-3 text-xs font-medium text-white">
-                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-shirt text-[#D9D9D6]"></i> Virtual Trial Room</div>
-                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-robot text-[#D9D9D6]"></i> Voice AI Agent</div>
-                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-envelope text-[#D9D9D6]"></i> Automated Reminders</div>
-                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-star text-[#D9D9D6]"></i> Review Automation</div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 text-xs font-medium text-white">
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-shirt text-[#D9D9D6] shrink-0"></i> Virtual Trial Room</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-robot text-[#D9D9D6] shrink-0"></i> Voice AI Agent</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-envelope text-[#D9D9D6] shrink-0"></i> Automated Reminders</div>
+                            <div class="p-3 rounded-xl bg-black/30 border border-white/5 flex items-center gap-2"><i class="fa-solid fa-star text-[#D9D9D6] shrink-0"></i> Review Automation</div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- LIVE INTERACTIVE WHATSAPP BOT DEMO (NO EMOJIS) -->
-            <section class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-                <div class="glass-panel p-8 sm:p-12 rounded-3xl border border-white/10">
-                    <div class="text-center max-w-3xl mx-auto mb-12">
+            <section class="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+                <div class="glass-panel p-5 sm:p-12 rounded-3xl border border-white/10">
+                    <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
                         <span class="text-xs font-mono text-[#D9D9D6] uppercase tracking-widest block mb-2">SEE IT IN ACTION</span>
-                        <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white">Live WhatsApp Bot Simulator</h2>
+                        <h2 class="font-display text-2xl sm:text-4xl font-extrabold text-white">Live WhatsApp Bot Simulator</h2>
                     </div>
 
-                    <div class="max-w-xl mx-auto bg-[#0C0C0D] p-4 sm:p-6 rounded-2xl border border-white/10">
-                        <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/10">
+                    <div class="max-w-xl mx-auto bg-[#0C0C0D] p-3.5 sm:p-6 rounded-2xl border border-white/10">
+                        <div class="flex items-center justify-between pb-3 mb-3 sm:mb-4 border-b border-white/10">
                             <div class="flex items-center gap-3">
                                 <div class="w-8 h-8 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-[#D9D9D6] font-bold">
                                     <i class="fa-brands fa-whatsapp text-lg"></i>
@@ -427,22 +549,22 @@
                             </div>
                         </div>
 
-                        <div id="demo-chat-box" class="h-44 overflow-y-auto space-y-2 p-3 bg-black/40 rounded-xl text-xs font-sans mb-3">
+                        <div id="demo-chat-box" class="h-48 sm:h-52 overflow-y-auto space-y-2 p-3 bg-black/40 rounded-xl text-xs font-sans mb-3">
                             <div class="bg-[#202124] text-white p-2.5 rounded-xl rounded-tl-none max-w-[85%] border border-white/5">
                                 Welcome! Select any option below to see how our WhatsApp automation responds.
                             </div>
                         </div>
 
-                        <div class="flex flex-wrap gap-2">
-                            <button onclick="simulateChat('Hours')" class="px-3 py-1.5 rounded-lg bg-[#202124] hover:bg-white/10 text-white text-xs border border-white/10 transition-colors"><i class="fa-solid fa-clock mr-1 text-[#D9D9D6]"></i> Opening Hours</button>
-                            <button onclick="simulateChat('Book')" class="px-3 py-1.5 rounded-lg bg-[#202124] hover:bg-white/10 text-white text-xs border border-white/10 transition-colors"><i class="fa-solid fa-calendar mr-1 text-[#D9D9D6]"></i> Book Appointment</button>
-                            <button onclick="simulateChat('Quote')" class="px-3 py-1.5 rounded-lg bg-[#202124] hover:bg-white/10 text-white text-xs border border-white/10 transition-colors"><i class="fa-solid fa-file-lines mr-1 text-[#D9D9D6]"></i> Get Rate Card</button>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <button onclick="simulateChat('Hours')" class="w-full px-3 py-2 rounded-lg bg-[#202124] hover:bg-white/10 text-white text-xs border border-white/10 transition-colors flex items-center justify-center min-h-[44px]"><i class="fa-solid fa-clock mr-1.5 text-[#D9D9D6]"></i> Opening Hours</button>
+                            <button onclick="simulateChat('Book')" class="w-full px-3 py-2 rounded-lg bg-[#202124] hover:bg-white/10 text-white text-xs border border-white/10 transition-colors flex items-center justify-center min-h-[44px]"><i class="fa-solid fa-calendar mr-1.5 text-[#D9D9D6]"></i> Book Slot</button>
+                            <button onclick="simulateChat('Quote')" class="w-full px-3 py-2 rounded-lg bg-[#202124] hover:bg-white/10 text-white text-xs border border-white/10 transition-colors flex items-center justify-center min-h-[44px]"><i class="fa-solid fa-file-lines mr-1.5 text-[#D9D9D6]"></i> Get Rate Card</button>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- HOW IT WORKS (UPDATED LIMITED SUPPORT) -->
+            <!-- HOW IT WORKS -->
             <section id="how-it-works" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-24">
                 <div class="text-center max-w-3xl mx-auto mb-16">
                     <span class="text-xs font-mono text-[#D9D9D6] uppercase tracking-widest block mb-3">ONBOARDING PROCESS</span>
@@ -479,7 +601,7 @@
                 </div>
             </section>
 
-            <!-- COMPARISON TABLE (UPDATED LIMITED SUPPORT) -->
+            <!-- COMPARISON TABLE -->
             <section class="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
                 <div class="text-center mb-12">
                     <span class="text-xs font-mono text-[#D9D9D6] uppercase tracking-widest block mb-2">WHY CHOOSE US</span>
@@ -523,7 +645,6 @@
                 </div>
             </section>
 
-            <!-- PRICING SECTION -->
             <section id="pricing" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-24">
                 <div class="text-center max-w-3xl mx-auto mb-16">
                     <span class="text-xs font-mono text-[#D9D9D6] uppercase tracking-widest block mb-3">CLEAR & TRANSPARENT</span>
@@ -534,30 +655,33 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <!-- Starter Package -->
                     <div class="glass-panel p-8 rounded-3xl relative flex flex-col justify-between">
+                        <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#D9D9D6] text-[#0C0C0D] text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                            LIMITED OFFER
+                        </div>
                         <div>
                             <span class="text-xs font-mono text-[#D9D9D6] uppercase block mb-2">STARTER DIGITAL</span>
                             <h3 class="font-display text-2xl font-bold text-white mb-2">Starter Package</h3>
                             <p class="text-xs text-[#8B8D93] mb-6">Perfect for small local shops & individual practices.</p>
                             <div class="text-3xl sm:text-4xl font-black text-white mb-6 font-display">
-                                Starting ₹13,000
+                                ₹8,500/-
                             </div>
 
                             <ul class="space-y-3 text-xs text-[#8B8D93] mb-8">
                                 <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Custom High-Speed Website</li>
                                 <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Google SEO & Maps Integration</li>
                                 <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Direct WhatsApp Lead Button</li>
-                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> 99.9% Uptime Cloud Hosting</li>
+                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> 24/7 Uptime Cloud Hosting</li>
                                 <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Limited Post-Launch Support</li>
                             </ul>
                         </div>
 
-                        <button onclick="openWhatsApp('Starter Package - ₹13,000')" class="btn-secondary w-full py-3 rounded-full text-xs font-bold">Select Starter</button>
+                        <button onclick="openWhatsApp('Starter Package - ₹8,500')" class="btn-secondary w-full py-3 rounded-full text-xs font-bold">Select Starter</button>
                     </div>
 
                     <!-- Professional Package -->
                     <div class="glass-panel p-8 rounded-3xl relative flex flex-col justify-between border-white/30 shadow-2xl">
                         <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#D9D9D6] text-[#0C0C0D] text-[10px] font-bold px-4 py-1 rounded-full uppercase tracking-wider">
-                            MOST POPULAR
+                            LIMITED OFFER
                         </div>
 
                         <div>
@@ -565,7 +689,7 @@
                             <h3 class="font-display text-2xl font-bold text-white mb-2">Professional</h3>
                             <p class="text-xs text-[#8B8D93] mb-6">Designed for clinics, restaurants, salons & gyms.</p>
                             <div class="text-3xl sm:text-4xl font-black text-[#D9D9D6] mb-6 font-display">
-                                Starting ₹30,000
+                                ₹13,000/-
                             </div>
 
                             <ul class="space-y-3 text-xs text-[#8B8D93] mb-8">
@@ -573,88 +697,111 @@
                                 <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> 24/7 WhatsApp AI Assistant</li>
                                 <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Automated Calendar Slot Booking</li>
                                 <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Digital Desk Inventory & Billing POS</li>
-                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Review Automation Workflows</li>
-                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Limited Post-Launch Support</li>
+                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Digital Dashboard for Stock & Employee Management</li>
                             </ul>
                         </div>
 
-                        <button onclick="openWhatsApp('Professional Package - ₹30,000')" class="btn-radiant w-full py-3.5 rounded-full text-xs font-bold">Claim Professional</button>
+                        <button onclick="openWhatsApp('Professional Package - ₹13,000')" class="btn-radiant w-full py-3.5 rounded-full text-xs font-bold">Claim Professional</button>
                     </div>
 
-                    <!-- Custom Enterprise -->
+                    <!-- Custom System Package -->
                     <div class="glass-panel p-8 rounded-3xl relative flex flex-col justify-between">
+                        <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-white/10 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-white/10">
+                            MOST POPULAR CHOICE
+                        </div>
                         <div>
                             <span class="text-xs font-mono text-[#D9D9D6] uppercase block mb-2">ENTERPRISE AI</span>
-                            <h3 class="font-display text-2xl font-bold text-white mb-2">Custom System</h3>
-                            <p class="text-xs text-[#8B8D93] mb-6">Multi-chain brands, academies, and large stores.</p>
+                            <h3 class="font-display text-2xl font-bold text-white mb-1">Custom System</h3>
+                            <p class="text-[11px] text-[#D9D9D6] font-medium mb-3">Website System + Optional Add-ons and Bots</p>
                             <div class="text-3xl sm:text-4xl font-black text-white mb-6 font-display">
-                                Custom Quote
+                                Custom Pricing
                             </div>
 
-                            <ul class="space-y-3 text-xs text-[#8B8D93] mb-8">
+                            <ul class="space-y-3 text-[#8B8D93] text-xs mb-8">
+                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Custom Features from Starter/Professional</li>
+                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> AI Training Engines</li>
                                 <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> AI Voice Phone Receptionist</li>
-                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> AI Virtual Trial Room Engine</li>
+                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> AI Virtual Trial Room</li>
                                 <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Custom API & CRM Software</li>
-                                <li class="flex items-center gap-2 text-white"><i class="fa-solid fa-check text-[#D9D9D6]"></i> Dedicated Priority Support Lead</li>
+                                <li class="flex items-center gap-2 text-[#8B8D93] italic"><i class="fa-solid fa-plus text-[#D9D9D6]"></i> And many more...</li>
                             </ul>
                         </div>
 
                         <button onclick="openWhatsApp('Enterprise Custom Quote')" class="btn-secondary w-full py-3 rounded-full text-xs font-bold">Request Enterprise Quote</button>
                     </div>
                 </div>
+
+                <!-- Care Plan Banner -->
+                <div class="mt-8 p-4 sm:p-5 rounded-2xl glass-panel text-center border border-white/10 max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="flex items-center gap-3 text-left">
+                        <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-[#D9D9D6] shrink-0">
+                            <i class="fa-solid fa-shield-halved text-lg"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-mono text-[#D9D9D6] uppercase block">ONGOING MAINTENANCE</span>
+                            <h4 class="text-sm font-bold text-white">Care Plan</h4>
+                        </div>
+                    </div>
+                    <div class="text-xs sm:text-sm font-semibold text-[#F5F5F4] text-center sm:text-right">
+                        <span class="text-white font-bold">₹1,100/month</span> OR <span class="text-white font-bold">₹8,500/year</span>
+                        <span class="inline-block bg-emerald-500/20 text-emerald-400 text-[11px] font-bold px-2 py-0.5 rounded-md ml-1.5 border border-emerald-500/30">Save ₹4,700</span>
+                    </div>
+                </div>
             </section>
 
             <!-- FAQ SECTION -->
-            <section class="py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-                <div class="text-center mb-12">
+            <section class="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+                <div class="text-center mb-10 sm:mb-12">
                     <span class="text-xs font-mono text-[#D9D9D6] uppercase tracking-widest block mb-2">COMMON QUESTIONS</span>
-                    <h2 class="font-display text-3xl sm:text-4xl font-extrabold text-white">Frequently Asked Questions</h2>
+                    <h2 class="font-display text-2xl sm:text-4xl font-extrabold text-white">Frequently Asked Questions</h2>
                 </div>
 
-                <div class="space-y-4">
-                    <div class="glass-panel p-5 rounded-2xl cursor-pointer" onclick="toggleFaq(this)">
-                        <div class="flex items-center justify-between font-bold text-sm text-white">
+                <div class="space-y-3 sm:space-y-4">
+                    <div class="glass-panel p-4 sm:p-5 rounded-2xl cursor-pointer" onclick="toggleFaq(this)">
+                        <div class="flex items-center justify-between font-bold text-xs sm:text-sm text-white gap-3">
                             <span>How long does it take to launch my website and AI system?</span>
-                            <i class="fa-solid fa-chevron-down text-[#D9D9D6] text-xs"></i>
+                            <i class="fa-solid fa-chevron-down text-[#D9D9D6] text-xs transition-transform duration-300 shrink-0"></i>
                         </div>
-                        <p class="text-xs text-[#8B8D93] mt-3 hidden">
+                        <p class="text-xs text-[#8B8D93] mt-3 hidden leading-relaxed">
                             Most custom website and WhatsApp automation builds go live within 5 to 7 days. We handle everything end-to-end with zero downtime for your store.
                         </p>
                     </div>
 
-                    <div class="glass-panel p-5 rounded-2xl cursor-pointer" onclick="toggleFaq(this)">
-                        <div class="flex items-center justify-between font-bold text-sm text-white">
+                    <div class="glass-panel p-4 sm:p-5 rounded-2xl cursor-pointer" onclick="toggleFaq(this)">
+                        <div class="flex items-center justify-between font-bold text-xs sm:text-sm text-white gap-3">
                             <span>Do I need technical skills to run this?</span>
-                            <i class="fa-solid fa-chevron-down text-[#D9D9D6] text-xs"></i>
+                            <i class="fa-solid fa-chevron-down text-[#D9D9D6] text-xs transition-transform duration-300 shrink-0"></i>
                         </div>
-                        <p class="text-xs text-[#8B8D93] mt-3 hidden">
+                        <p class="text-xs text-[#8B8D93] mt-3 hidden leading-relaxed">
                             Zero technical knowledge required. Everything is managed easily from your phone, and our team provides training and limited technical support.
                         </p>
                     </div>
 
-                    <div class="glass-panel p-5 rounded-2xl cursor-pointer" onclick="toggleFaq(this)">
-                        <div class="flex items-center justify-between font-bold text-sm text-white">
+                    <div class="glass-panel p-4 sm:p-5 rounded-2xl cursor-pointer" onclick="toggleFaq(this)">
+                        <div class="flex items-center justify-between font-bold text-xs sm:text-sm text-white gap-3">
                             <span>How does the 24/7 WhatsApp AI Assistant work?</span>
-                            <i class="fa-solid fa-chevron-down text-[#D9D9D6] text-xs"></i>
+                            <i class="fa-solid fa-chevron-down text-[#D9D9D6] text-xs transition-transform duration-300 shrink-0"></i>
                         </div>
-                        <p class="text-xs text-[#8B8D93] mt-3 hidden">
+                        <p class="text-xs text-[#8B8D93] mt-3 hidden leading-relaxed">
                             It connects directly to your WhatsApp business account to automatically answer inquiries, share price lists, and schedule bookings.
                         </p>
                     </div>
                 </div>
             </section>
 
-            <!-- FINAL CALL TO ACTION -->
-            <section class="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-center">
-                <div class="glass-panel p-10 sm:p-16 rounded-3xl border border-white/20 relative overflow-hidden">
-                    <span class="text-xs font-mono text-[#D9D9D6] uppercase tracking-widest block mb-4">TAKE THE NEXT STEP</span>
-                    <h2 class="font-display text-4xl sm:text-6xl font-black text-white mb-6">
-                        Ready To Grow Your Business?
-                    </h2>
-                    <p class="text-sm sm:text-base text-[#8B8D93] max-w-xl mx-auto mb-8">
+            <section class="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-center">
+                <div class="glass-panel p-6 sm:p-14 rounded-3xl border border-white/20 relative overflow-hidden flex flex-col items-center">
+                    <span class="text-xs font-mono text-[#D9D9D6] uppercase tracking-widest block mb-2 sm:mb-4">TAKE THE NEXT STEP</span>
+                    
+                    <!-- React Bits <SplitFlapText /> Integration for "Ready To Grow Your Business?" -->
+                    <div id="split-flap-container" class="split-flap-container my-3 sm:my-4">
+                        <!-- Tiles injected dynamically via JS -->
+                    </div>
+
+                    <p class="text-xs sm:text-base text-[#8B8D93] max-w-xl mx-auto mb-6 sm:mb-8 mt-3">
                         Book a 15-minute business audit with Sidhh Rana or Atharv Malik. We'll show you exactly how to automate your leads.
                     </p>
-                    <button onclick="openWhatsApp('Final Banner CTA')" class="btn-radiant px-10 py-5 rounded-full text-base font-bold inline-flex items-center gap-3">
+                    <button onclick="openWhatsApp('Final Banner CTA')" class="btn-radiant w-full sm:w-auto px-8 sm:px-10 py-4 sm:py-5 rounded-full text-sm sm:text-base font-bold inline-flex items-center justify-center gap-3 active:scale-95 transition-transform">
                         <i class="fa-brands fa-whatsapp text-xl"></i>
                         <span>Let's Build Something Amazing</span>
                     </button>
@@ -663,221 +810,762 @@
 
         </div>
 
-        <!-- ========================================================= -->
-        <!-- VIEW 2: DEDICATED SEPARATE FOUNDERS PAGE VIEW -->
-        <!-- ========================================================= -->
-        <div id="founders-view" class="hidden px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto pt-6 pb-20">
-            <!-- Breadcrumb Navigation -->
-            <div class="mb-8">
-                <button onclick="switchView('home')" class="text-xs font-mono text-[#D9D9D6] hover:underline inline-flex items-center gap-2">
-                    <i class="fa-solid fa-arrow-left"></i> Back to Main Platform
-                </button>
-            </div>
-
-            <!-- Header Title -->
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span class="text-xs font-mono text-[#8B8D93] uppercase tracking-widest block mb-3">THE ARCHITECTS OF BUILD & BEYOND</span>
-                <h1 class="font-display text-4xl sm:text-6xl font-black text-white mb-6">
-                    Meet Our Founders
-                </h1>
-                <p class="text-base sm:text-lg text-[#8B8D93] leading-relaxed">
-                    BUILD & BEYOND was founded with a singular mission: empower local store owners, practice directors, and entrepreneurs with enterprise-grade tech without the complexity.
-                </p>
-            </div>
-
-            <!-- Founders Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-                <!-- Sidhh Rana -->
-                <div class="glass-panel p-8 rounded-3xl border border-white/10 flex flex-col justify-between">
-                    <div>
-                        <div class="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center font-display font-extrabold text-white text-2xl mb-6 shadow-lg border border-white/10">
-                            SR
-                        </div>
-                        <span class="text-xs font-mono text-[#D9D9D6] uppercase block mb-1">CO-FOUNDER & TECH ARCHITECT</span>
-                        <h2 class="font-display text-2xl font-bold text-white mb-4">Sidhh Rana</h2>
-                        <p class="text-xs sm:text-sm text-[#8B8D93] leading-relaxed mb-6">
-                            "Local store owners were losing lakhs every month to missed phone calls, slow response times, and outdated manual logbooks. We engineered Build & Beyond to bring enterprise AI speed and custom software directly to neighborhood businesses."
-                        </p>
-                    </div>
-                    <div class="pt-6 border-t border-white/10 flex items-center justify-between">
-                        <span class="text-xs text-white font-medium"><i class="fa-solid fa-code text-[#D9D9D6] mr-2"></i> System Architecture & AI</span>
-                        <button onclick="openWhatsApp('Founders Page - Sidhh Rana')" class="btn-secondary px-4 py-2 rounded-full text-xs font-bold">Connect</button>
-                    </div>
-                </div>
-
-                <!-- Atharv Malik -->
-                <div class="glass-panel p-8 rounded-3xl border border-white/10 flex flex-col justify-between">
-                    <div>
-                        <div class="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center font-display font-extrabold text-white text-2xl mb-6 shadow-lg border border-white/10">
-                            AM
-                        </div>
-                        <span class="text-xs font-mono text-[#D9D9D6] uppercase block mb-1">CO-FOUNDER & GROWTH LEAD</span>
-                        <h2 class="font-display text-2xl font-bold text-white mb-4">Atharv Malik</h2>
-                        <p class="text-xs sm:text-sm text-[#8B8D93] leading-relaxed mb-6">
-                            "Technology shouldn't confuse business owners—it should make them money. We handle 100% of the tech design, deployment, hosting, and limited ongoing maintenance so you can focus strictly on growing your customer base."
-                        </p>
-                    </div>
-                    <div class="pt-6 border-t border-white/10 flex items-center justify-between">
-                        <span class="text-xs text-white font-medium"><i class="fa-solid fa-chart-line text-[#D9D9D6] mr-2"></i> Growth Strategy & ROI</span>
-                        <button onclick="openWhatsApp('Founders Page - Atharv Malik')" class="btn-secondary px-4 py-2 rounded-full text-xs font-bold">Connect</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Founders Story Banner -->
-            <div class="glass-panel p-8 sm:p-12 rounded-3xl text-center border border-white/10">
-                <h3 class="font-display text-2xl sm:text-3xl font-bold text-white mb-4">Our Core Philosophy</h3>
-                <p class="text-xs sm:text-sm text-[#8B8D93] max-w-2xl mx-auto leading-relaxed mb-8">
-                    We believe every local store, clinic, and restaurant deserves the same technological leverage used by massive corporate chains—delivered with zero technical stress and transparent pricing.
-                </p>
-                <button onclick="openWhatsApp('Founders Direct Meeting', 'Hi Sidhh and Atharv, I want to book a meeting to discuss growing my business')" class="btn-radiant px-8 py-4 rounded-full text-sm font-bold inline-flex items-center gap-3">
-                    <i class="fa-brands fa-whatsapp text-lg"></i>
-                    <span>Schedule Meeting With Founders</span>
-                </button>
-            </div>
-        </div>
-
     </main>
 
-    <!-- FOOTER -->
     <footer class="border-t border-white/10 py-10 px-4 sm:px-6 text-xs text-[#8B8D93] relative z-10 bg-[#161618]">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
             <div class="flex items-center gap-3">
                 <span class="font-bold text-white text-sm tracking-tight">BUILD & BEYOND</span>
             </div>
 
-            <div class="font-mono text-center text-[11px]">
-                © 2026 BUILD & BEYOND. Founded by Sidhh Rana & Atharv Malik.
+            <div class="font-mono text-center text-[11px] space-y-1">
+                <div>© 2026 BUILD & BEYOND. Founded by Sidhh Rana & Atharv Malik.</div>
+                <div class="text-[#8B8D93]"><i class="fa-solid fa-phone text-[#D9D9D6] mr-1"></i> +91 98102 52596 &nbsp;|&nbsp; <i class="fa-solid fa-envelope text-[#D9D9D6] mr-1"></i> Buildandbeyondbusiness@gmail.com</div>
             </div>
 
             <div class="flex gap-6 text-white font-medium">
-                <a href="#businesses" onclick="switchView('home')" class="hover:text-[#D9D9D6]">Industries</a>
-                <a href="#outcomes" onclick="switchView('home')" class="hover:text-[#D9D9D6]">Solutions</a>
-                <a href="#" onclick="switchView('founders'); return false;" class="hover:text-[#D9D9D6]">Founders</a>
-                <a href="#pricing" onclick="switchView('home')" class="hover:text-[#D9D9D6]">Pricing</a>
+                <a href="#businesses" class="hover:text-[#D9D9D6]">Industries</a>
+                <a href="#outcomes" class="hover:text-[#D9D9D6]">Solutions</a>
+                <a href="#pricing" class="hover:text-[#D9D9D6]">Pricing</a>
             </div>
         </div>
     </footer>
 
     <script>
-        // Direct WhatsApp Booking Handler (+91 98102 52596)
-        function openWhatsApp(topic, customMessage) {
-            try {
-                var targetPhone = "919810252596";
-                var defaultText = "Hi, I checked out your website and I want a free meeting to discuss growing my business";
-                var textToSend = customMessage ? customMessage : defaultText;
-                
-                if (topic) {
-                    textToSend += " (" + topic + ")";
-                }
-
-                var waUrl = "https://wa.me/" + targetPhone + "?text=" + encodeURIComponent(textToSend);
-                window.open(waUrl, '_blank');
-            } catch (err) {
-                console.error("WhatsApp redirect error:", err);
-            }
-        }
-
-        // View Switcher (Home vs Dedicated Founders Page)
-        function switchView(viewName) {
-            try {
-                const homeView = document.getElementById('home-view');
-                const foundersView = document.getElementById('founders-view');
-                if (!homeView || !foundersView) return;
-
-                if (viewName === 'founders') {
-                    homeView.classList.add('hidden');
-                    foundersView.classList.remove('hidden');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                } else {
-                    foundersView.classList.add('hidden');
-                    homeView.classList.remove('hidden');
-                }
-            } catch (err) {
-                console.error("View switch error:", err);
-            }
-        }
-
-        // Nav Overlay Menu Toggle
         function toggleNavOverlay() {
-            try {
-                const overlay = document.getElementById('nav-overlay');
-                const icon = document.getElementById('hamburger-icon');
-                if (!overlay || !icon) return;
+            const navOverlay = document.getElementById('nav-overlay');
+            const icon = document.getElementById('hamburger-icon');
+            if (!navOverlay) return;
 
-                if (overlay.classList.contains('hidden')) {
-                    overlay.classList.remove('hidden');
-                    overlay.classList.add('flex');
-                    icon.className = 'fa-solid fa-xmark text-sm';
-                } else {
-                    overlay.classList.add('hidden');
-                    overlay.classList.remove('flex');
-                    icon.className = 'fa-solid fa-bars text-sm';
-                }
-            } catch (err) {
-                console.error("Nav overlay error:", err);
-            }
-        }
-
-        // FAQ Accordion Toggle
-        function toggleFaq(element) {
-            try {
-                var text = element.querySelector('p');
-                var icon = element.querySelector('i');
-                if (text) {
-                    text.classList.toggle('hidden');
-                }
+            if (navOverlay.classList.contains('hidden')) {
+                navOverlay.classList.remove('hidden');
+                navOverlay.classList.add('flex');
                 if (icon) {
-                    icon.classList.toggle('rotate-180');
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
                 }
-            } catch (err) {
-                console.error("FAQ toggle error:", err);
+                document.body.style.overflow = 'hidden';
+            } else {
+                navOverlay.classList.remove('flex');
+                navOverlay.classList.add('hidden');
+                if (icon) {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                }
+                document.body.style.overflow = '';
             }
         }
 
-        // WhatsApp Chat Demo Simulation (Clean Text)
-        function simulateChat(type) {
-            try {
-                var chatBox = document.getElementById('demo-chat-box');
-                if (!chatBox) return;
+        function openWhatsApp(topic) {
+            const phoneNumber = "919810252596";
+            const text = `Hi, I checked out your website (${topic || 'General Inquiry'}) and I want a meeting to discuss further.`;
+            const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
+        }
 
-                var userText = "";
-                var replyText = "";
+        function switchView(viewName) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-                if (type === 'Hours') {
-                    userText = "What are your opening hours?";
-                    replyText = "We are open Monday to Saturday, 10:00 AM – 8:30 PM!";
-                } else if (type === 'Book') {
-                    userText = "I want to book an appointment slot";
-                    replyText = "Great! Open slots tomorrow: 2:30 PM and 5:00 PM. Reply 1 or 2 to confirm.";
-                } else if (type === 'Quote') {
-                    userText = "Send me your price menu PDF";
-                    replyText = "Generating your custom rate card... Here is the rate card for store digitization.";
-                }
+        function simulateChat(topic) {
+            const chatBox = document.getElementById('demo-chat-box');
+            if (!chatBox) return;
 
-                chatBox.innerHTML += `
-                    <div class="flex justify-end my-2">
-                        <div class="bg-white/10 text-white p-2 rounded-xl rounded-tr-none text-xs max-w-[85%] border border-white/10">
-                            ${userText}
-                        </div>
-                    </div>
-                `;
+            let userText = "";
+            let botReply = "";
+
+            if (topic === 'Hours') {
+                userText = "What are your operating hours?";
+                botReply = "We are open Mon-Sat from 9:00 AM to 9:00 PM. Would you like to schedule a visit or consultation?";
+            } else if (topic === 'Book') {
+                userText = "I'd like to book an appointment slot.";
+                botReply = "Great! Available slots for today: 3:00 PM, 5:30 PM, or 7:00 PM. Reply with your preferred slot to confirm instantly.";
+            } else if (topic === 'Quote') {
+                userText = "Can I get a rate card or price quote?";
+                botReply = "Our standard packages start at ₹8,500 for Starter and ₹13,000 for Professional. I can send a custom PDF quote right to your WhatsApp!";
+            } else {
+                userText = topic;
+                botReply = "Thank you for reaching out! Our team will connect with you right away.";
+            }
+
+            const userBubble = document.createElement('div');
+            userBubble.className = 'bg-[#D9D9D6] text-[#0C0C0D] p-2.5 rounded-xl rounded-tr-none max-w-[85%] ml-auto font-medium text-right shadow-sm';
+            userBubble.textContent = userText;
+            chatBox.appendChild(userBubble);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            setTimeout(() => {
+                const botBubble = document.createElement('div');
+                botBubble.className = 'bg-[#202124] text-white p-2.5 rounded-xl rounded-tl-none max-w-[85%] border border-white/5 shadow-sm';
+                botBubble.textContent = botReply;
+                chatBox.appendChild(botBubble);
                 chatBox.scrollTop = chatBox.scrollHeight;
+            }, 400);
+        }
 
-                setTimeout(function() {
-                    chatBox.innerHTML += `
-                        <div class="flex justify-start my-2">
-                            <div class="bg-[#202124] text-white p-2.5 rounded-xl rounded-tl-none text-xs max-w-[85%] border border-white/10">
-                                ${replyText}
-                            </div>
-                        </div>
-                    `;
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                }, 300);
+        function toggleFaq(element) {
+            if (!element) return;
+            const p = element.querySelector('p');
+            const icon = element.querySelector('i');
+            if (p) p.classList.toggle('hidden');
+            if (icon) icon.classList.toggle('rotate-180');
+        }
+
+        function initParticleText() {
+            try {
+                const container = document.getElementById('particle-text-container');
+                if (!container) return;
+
+                const textLines = ["Grow Your Business.", "We’ll Handle The Technology."];
+                const particleSize = 2;
+                const density = 3;
+                const color = '#F5F5F4';
+                const highlightColor = '#8B8D93';
+                const scatter = 180;
+                const gatherDuration = 1600;
+                const stagger = 380;
+                const pointerRepel = 45;
+                const repelRadius = 130;
+                const idleDrift = 0.7;
+                const trigger = 'hover';
+                const fontSize = 'clamp(1.3rem, 5.2vw, 3.8rem)';
+                const fontWeight = 800;
+                const fontFamily = 'Plus Jakarta Sans, sans-serif';
+                const glow = true;
+
+                let canvas = container.querySelector('canvas');
+                if (!canvas) {
+                    canvas = document.createElement('canvas');
+                    canvas.className = 'w-full h-full block touch-none';
+                    container.appendChild(canvas);
+                }
+
+                const ctx = canvas.getContext('2d');
+                if (!ctx) return;
+
+                const hexToRgb = hex => {
+                    const clean = hex.replace('#', '').trim();
+                    if (!/^[0-9a-fA-F]{6}$/.test(clean)) return null;
+                    return {
+                        r: parseInt(clean.slice(0, 2), 16),
+                        g: parseInt(clean.slice(2, 4), 16),
+                        b: parseInt(clean.slice(4, 6), 16)
+                    };
+                };
+
+                const mixRgb = (from, to, amount) => ({
+                    r: Math.round(from.r + (to.r - from.r) * amount),
+                    g: Math.round(from.g + (to.g - from.g) * amount),
+                    b: Math.round(from.b + (to.b - from.b) * amount)
+                });
+
+                const rgbToCss = rgb => `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+                const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
+                const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+
+                const resolveFontSize = (value, containerEl, weight, family) => {
+                    if (typeof value === 'number') return value;
+                    const probe = document.createElement('span');
+                    probe.textContent = 'M';
+                    probe.style.position = 'absolute';
+                    probe.style.visibility = 'hidden';
+                    probe.style.pointerEvents = 'none';
+                    probe.style.fontSize = value;
+                    probe.style.fontWeight = String(weight);
+                    probe.style.fontFamily = family;
+                    containerEl.appendChild(probe);
+                    const size = parseFloat(window.getComputedStyle(probe).fontSize) || 48;
+                    probe.remove();
+                    return size;
+                };
+
+                let particles = [];
+                let animationFrame = null;
+                let buildId = 0;
+                let gathering = false;
+                let gatherStart = 0;
+                let reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+                let width = 0;
+                let height = 0;
+                let dpr = 1;
+
+                const pointer = { active: false, x: 0, y: 0, smoothX: 0, smoothY: 0 };
+
+                const startGather = (fromScatter = true) => {
+                    if (!particles.length) return;
+                    const now = performance.now();
+                    const spread = reducedMotion ? 0 : scatter;
+
+                    particles.forEach(particle => {
+                        if (fromScatter) {
+                            const angle = particle.seed * Math.PI * 2;
+                            const distance = spread * (0.35 + particle.depth * 0.75);
+                            particle.x = particle.targetX + Math.cos(angle) * distance + (particle.depth - 0.5) * spread * 0.55;
+                            particle.y = particle.targetY + Math.sin(angle) * distance + (particle.seed - 0.5) * spread * 0.55;
+                        }
+                        particle.startX = particle.x;
+                        particle.startY = particle.y;
+                        particle.delay = reducedMotion ? 0 : particle.seed * stagger;
+                    });
+
+                    gatherStart = now;
+                    gathering = true;
+                };
+
+                const drawParticle = particle => {
+                    const size = particle.size;
+                    ctx.fillStyle = particle.color;
+                    if (size <= 2.1) {
+                        ctx.fillRect(particle.x - size / 2, particle.y - size / 2, size, size);
+                        return;
+                    }
+                    ctx.beginPath();
+                    ctx.arc(particle.x, particle.y, size / 2, 0, Math.PI * 2);
+                    ctx.fill();
+                };
+
+                const render = now => {
+                    ctx.clearRect(0, 0, width, height);
+
+                    if (glow && !reducedMotion) {
+                        ctx.shadowBlur = particleSize * 3;
+                        ctx.shadowColor = highlightColor;
+                    } else {
+                        ctx.shadowBlur = 0;
+                    }
+
+                    pointer.smoothX += (pointer.x - pointer.smoothX) * 0.18;
+                    pointer.smoothY += (pointer.y - pointer.smoothY) * 0.18;
+
+                    let complete = true;
+
+                    particles.forEach(particle => {
+                        let baseX = particle.targetX;
+                        let baseY = particle.targetY;
+                        let progress = 1;
+
+                        if (gathering) {
+                            const local = (now - gatherStart - particle.delay) / Math.max(1, reducedMotion ? 1 : gatherDuration);
+                            progress = clamp(local, 0, 1);
+                            const eased = easeOutCubic(progress);
+                            baseX = particle.startX + (particle.targetX - particle.startX) * eased;
+                            baseY = particle.startY + (particle.targetY - particle.startY) * eased;
+                            if (progress < 1) complete = false;
+                        } else if (!reducedMotion && idleDrift > 0) {
+                            const driftTime = now * 0.001;
+                            baseX += Math.sin(driftTime * 0.9 + particle.seed * 10) * idleDrift * particle.depth;
+                            baseY += Math.cos(driftTime * 0.75 + particle.depth * 10) * idleDrift * particle.depth;
+                        }
+
+                        if (pointer.active && !reducedMotion && pointerRepel > 0 && repelRadius > 0) {
+                            const dx = baseX - pointer.smoothX;
+                            const dy = baseY - pointer.smoothY;
+                            const distance = Math.hypot(dx, dy);
+                            if (distance > 0 && distance < repelRadius) {
+                                const force = Math.pow(1 - distance / repelRadius, 2) * pointerRepel;
+                                baseX += (dx / distance) * force;
+                                baseY += (dy / distance) * force;
+                            }
+                        }
+
+                        const follow = reducedMotion ? 1 : 0.22;
+                        particle.x += (baseX - particle.x) * follow;
+                        particle.y += (baseY - particle.y) * follow;
+
+                        ctx.globalAlpha = clamp(0.35 + progress * 0.65, 0, 1);
+                        drawParticle(particle);
+                    });
+
+                    ctx.globalAlpha = 1;
+                    ctx.shadowBlur = 0;
+
+                    if (gathering && complete) gathering = false;
+
+                    animationFrame = window.requestAnimationFrame(render);
+                };
+
+                const sampleText = async () => {
+                    const currentBuild = ++buildId;
+                    const rect = container.getBoundingClientRect();
+                    width = Math.floor(rect.width);
+                    height = Math.floor(rect.height);
+
+                    if (width <= 0 || height <= 0) return;
+
+                    dpr = Math.min(window.devicePixelRatio || 1, 2);
+                    canvas.width = Math.max(1, Math.floor(width * dpr));
+                    canvas.height = Math.max(1, Math.floor(height * dpr));
+                    canvas.style.width = '100%';
+                    canvas.style.height = '100%';
+                    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+                    const computed = window.getComputedStyle(container);
+                    const resolvedFamily = fontFamily === 'inherit' ? computed.fontFamily || 'sans-serif' : fontFamily;
+                    let resolvedSize = resolveFontSize(fontSize, container, fontWeight, resolvedFamily);
+                    let fontStr = `${fontWeight} ${resolvedSize}px ${resolvedFamily}`;
+
+                    if ('fonts' in document) {
+                        try { await document.fonts.load(fontStr); } catch {}
+                        await document.fonts.ready;
+                    }
+                    if (currentBuild !== buildId) return;
+
+                    const maxTextWidth = width * 0.92;
+                    const offscreen = document.createElement('canvas');
+                    const offCtx = offscreen.getContext('2d', { willReadFrequently: true });
+                    if (!offCtx) return;
+
+                    offCtx.font = fontStr;
+                    let maxMeasuredWidth = Math.max(...textLines.map(line => offCtx.measureText(line).width));
+                    
+                    if (maxMeasuredWidth > maxTextWidth) {
+                        resolvedSize = Math.max(16, resolvedSize * (maxTextWidth / maxMeasuredWidth));
+                        fontStr = `${fontWeight} ${resolvedSize}px ${resolvedFamily}`;
+                        offCtx.font = fontStr;
+                    }
+
+                    const lineHeight = resolvedSize * 1.22;
+                    const totalHeight = lineHeight * textLines.length;
+                    const canvasWidth = Math.max(1, Math.ceil(width * 0.95));
+                    const canvasHeight = Math.max(1, Math.ceil(totalHeight + resolvedSize));
+
+                    offscreen.width = canvasWidth;
+                    offscreen.height = canvasHeight;
+                    offCtx.clearRect(0, 0, offscreen.width, offscreen.height);
+                    offCtx.font = fontStr;
+                    offCtx.textAlign = 'center';
+                    offCtx.textBaseline = 'middle';
+                    offCtx.fillStyle = '#ffffff';
+
+                    textLines.forEach((line, index) => {
+                        const yPos = (offscreen.height / 2) - ((textLines.length - 1) * lineHeight / 2) + (index * lineHeight);
+                        offCtx.fillText(line, offscreen.width / 2, yPos);
+                    });
+
+                    const imageData = offCtx.getImageData(0, 0, offscreen.width, offscreen.height);
+                    const targets = [];
+                    const step = Math.max(2, Math.floor(density));
+
+                    for (let y = 0; y < offscreen.height; y += step) {
+                        for (let x = 0; x < offscreen.width; x += step) {
+                            const alpha = imageData.data[(y * offscreen.width + x) * 4 + 3];
+                            if (alpha > 40) {
+                                targets.push({
+                                    x: width / 2 - offscreen.width / 2 + x,
+                                    y: height / 2 - offscreen.height / 2 + y,
+                                    alpha: alpha / 255
+                                });
+                            }
+                        }
+                    }
+
+                    const maxParticles = Math.max(1000, Math.min(5000, Math.floor((width * height) / 80)));
+                    const stride = Math.max(1, Math.ceil(targets.length / maxParticles));
+                    const baseRgb = hexToRgb(color);
+                    const highlightRgb = hexToRgb(highlightColor);
+                    const selected = targets.filter((_, index) => index % stride === 0);
+
+                    particles = selected.map((target, index) => {
+                        const seed = ((index * 9301 + 49297) % 233280) / 233280;
+                        const depth = 0.45 + (((index * 233 + 97) % 1000) / 1000) * 0.9;
+                        const blend = baseRgb && highlightRgb ? clamp(target.y / Math.max(1, height) + (seed - 0.5) * 0.35, 0, 1) : 0;
+                        const particleColor = baseRgb && highlightRgb ? rgbToCss(mixRgb(baseRgb, highlightRgb, blend)) : color;
+                        const angle = seed * Math.PI * 2;
+                        const distance = (reducedMotion ? 0 : scatter) * (0.35 + depth * 0.75);
+                        const startX = target.x + Math.cos(angle) * distance + (seed - 0.5) * scatter * 0.45;
+                        const startY = target.y + Math.sin(angle) * distance + (depth - 0.9) * scatter * 0.45;
+
+                        return {
+                            x: reducedMotion ? target.x : startX,
+                            y: reducedMotion ? target.y : startY,
+                            startX,
+                            startY,
+                            targetX: target.x,
+                            targetY: target.y,
+                            size: Math.max(0.6, particleSize * (0.75 + target.alpha * 0.45)),
+                            color: particleColor,
+                            seed,
+                            depth,
+                            delay: seed * stagger
+                        };
+                    });
+
+                    pointer.x = width / 2;
+                    pointer.y = height / 2;
+                    pointer.smoothX = pointer.x;
+                    pointer.smoothY = pointer.y;
+
+                    if (reducedMotion) {
+                        particles.forEach(p => {
+                            p.x = p.targetX; p.y = p.targetY;
+                            p.startX = p.targetX; p.startY = p.targetY;
+                            p.delay = 0;
+                        });
+                        gathering = false;
+                    } else {
+                        startGather(false);
+                    }
+
+                    if (animationFrame === null) {
+                        animationFrame = window.requestAnimationFrame(render);
+                    }
+                };
+
+                const handlePointerMove = e => {
+                    const rect = canvas.getBoundingClientRect();
+                    pointer.x = e.clientX - rect.left;
+                    pointer.y = e.clientY - rect.top;
+                    pointer.active = true;
+                };
+
+                const handlePointerLeave = () => { pointer.active = false; };
+                const handlePointerEnter = e => {
+                    handlePointerMove(e);
+                    if (trigger === 'hover') startGather(true);
+                };
+
+                const handleTouchMove = e => {
+                    if (e.touches && e.touches[0]) {
+                        const rect = canvas.getBoundingClientRect();
+                        pointer.x = e.touches[0].clientX - rect.left;
+                        pointer.y = e.touches[0].clientY - rect.top;
+                        pointer.active = true;
+                    }
+                };
+
+                const handleTouchEnd = () => { pointer.active = false; };
+                const handleClick = () => { if (trigger === 'click') startGather(true); };
+
+                canvas.addEventListener('pointerenter', handlePointerEnter);
+                canvas.addEventListener('pointermove', handlePointerMove);
+                canvas.addEventListener('pointerleave', handlePointerLeave);
+                canvas.addEventListener('touchstart', handleTouchMove, { passive: true });
+                canvas.addEventListener('touchmove', handleTouchMove, { passive: true });
+                canvas.addEventListener('touchend', handleTouchEnd, { passive: true });
+                canvas.addEventListener('click', handleClick);
+
+                const resizeObserver = new ResizeObserver(sampleText);
+                resizeObserver.observe(container);
+                sampleText();
             } catch (err) {
-                console.error("Chat simulation error:", err);
+                console.error("ParticleText initialization error:", err);
             }
         }
+
+        function initSplitFlapText() {
+            try {
+                const container = document.getElementById('split-flap-container');
+                if (!container) return;
+
+                const phrases = ["READY TO GROW?", "AUTOMATE LEADS", "SCALE REVENUE", "BUILD & BEYOND"];
+                const padTo = 15;
+                const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!?& ";
+                const flipDuration = 110; // ms
+                const stagger = 45; // ms
+                const cycleDelay = 2600; // ms
+                const flipsPerChar = 6;
+
+                let currentPhraseIndex = 0;
+                let currentText = phrases[0].padEnd(padTo, ' ').slice(0, padTo);
+
+                container.innerHTML = '';
+                const tileElements = [];
+
+                for (let i = 0; i < padTo; i++) {
+                    const char = currentText[i] || ' ';
+                    const tile = document.createElement('div');
+                    tile.className = 'split-flap-tile';
+                    tile.setAttribute('aria-hidden', 'true');
+                    tile.innerHTML = `
+                        <div class="split-flap-half split-flap-half--top"><span class="split-flap-char">${char === ' ' ? '&nbsp;' : char}</span></div>
+                        <div class="split-flap-half split-flap-half--bottom"><span class="split-flap-char">${char === ' ' ? '&nbsp;' : char}</span></div>
+                    `;
+                    container.appendChild(tile);
+
+                    tileElements.push({
+                        el: tile,
+                        topChar: tile.querySelector('.split-flap-half--top .split-flap-char'),
+                        bottomChar: tile.querySelector('.split-flap-half--bottom .split-flap-char'),
+                        currentChar: char
+                    });
+                }
+
+                function animateTileTo(tileObj, targetChar, delay) {
+                    if (tileObj.currentChar === targetChar) return;
+
+                    const sequence = [];
+                    for (let i = 0; i < flipsPerChar; i++) {
+                        sequence.push(charset[Math.floor(Math.random() * charset.length)]);
+                    }
+                    sequence.push(targetChar);
+
+                    setTimeout(() => {
+                        let step = 0;
+                        function flipStep() {
+                            if (step >= sequence.length) {
+                                tileObj.currentChar = targetChar;
+                                return;
+                            }
+                            const fromC = step === 0 ? tileObj.currentChar : sequence[step - 1];
+                            const toC = sequence[step];
+
+                            const oldFlaps = tileObj.el.querySelectorAll('.split-flap-flap');
+                            oldFlaps.forEach(f => f.remove());
+
+                            const frontFlap = document.createElement('div');
+                            frontFlap.className = 'split-flap-flap split-flap-flap--front';
+                            frontFlap.innerHTML = `<span class="split-flap-char">${fromC === ' ' ? '&nbsp;' : fromC}</span>`;
+
+                            const backFlap = document.createElement('div');
+                            backFlap.className = 'split-flap-flap split-flap-flap--back';
+                            backFlap.innerHTML = `<span class="split-flap-char">${toC === ' ' ? '&nbsp;' : toC}</span>`;
+
+                            tileObj.topChar.innerHTML = fromC === ' ' ? '&nbsp;' : fromC;
+                            tileObj.bottomChar.innerHTML = toC === ' ' ? '&nbsp;' : toC;
+
+                            tileObj.el.appendChild(frontFlap);
+                            tileObj.el.appendChild(backFlap);
+
+                            setTimeout(() => {
+                                tileObj.topChar.innerHTML = toC === ' ' ? '&nbsp;' : toC;
+                                frontFlap.remove();
+                                backFlap.remove();
+                                step++;
+                                if (step < sequence.length) {
+                                    flipStep();
+                                } else {
+                                    tileObj.currentChar = targetChar;
+                                }
+                            }, flipDuration);
+                        }
+                        flipStep();
+                    }, delay);
+                }
+
+                function cycleToNextPhrase() {
+                    currentPhraseIndex = (currentPhraseIndex + 1) % phrases.length;
+                    const targetText = phrases[currentPhraseIndex].padEnd(padTo, ' ').slice(0, padTo);
+
+                    for (let i = 0; i < padTo; i++) {
+                        const targetChar = targetText[i] || ' ';
+                        if (tileElements[i].currentChar !== targetChar) {
+                            animateTileTo(tileElements[i], targetChar, i * stagger);
+                        }
+                    }
+                }
+
+                setInterval(cycleToNextPhrase, cycleDelay);
+            } catch (err) {
+                console.error("SplitFlapText initialization error:", err);
+            }
+        }
+
+        function initAuroraWebGL() {
+            try {
+                const canvas = document.getElementById('aurora-webgl-canvas');
+                if (!canvas) return;
+
+                const gl = canvas.getContext('webgl2', { alpha: true, premultipliedAlpha: true });
+                if (!gl) return;
+
+                const vsSource = `#version 300 es
+                in vec2 position;
+                void main() {
+                    gl_Position = vec4(position, 0.0, 1.0);
+                }`;
+
+                const fsSource = `#version 300 es
+                precision highp float;
+
+                uniform float uTime;
+                uniform float uAmplitude;
+                uniform vec3 uColorStops[3];
+                uniform vec2 uResolution;
+                uniform float uBlend;
+
+                out vec4 fragColor;
+
+                vec3 permute(vec3 x) {
+                    return mod(((x * 34.0) + 1.0) * x, 289.0);
+                }
+
+                float snoise(vec2 v){
+                    const vec4 C = vec4(
+                        0.211324865405187, 0.366025403784439,
+                        -0.577350269189626, 0.024390243902439
+                    );
+                    vec2 i  = floor(v + dot(v, C.yy));
+                    vec2 x0 = v - i + dot(i, C.xx);
+                    vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+                    vec4 x12 = x0.xyxy + C.xxzz;
+                    x12.xy -= i1;
+                    i = mod(i, 289.0);
+
+                    vec3 p = permute(
+                        permute(i.y + vec3(0.0, i1.y, 1.0))
+                      + i.x + vec3(0.0, i1.x, 1.0)
+                    );
+
+                    vec3 m = max(
+                        0.5 - vec3(
+                            dot(x0, x0),
+                            dot(x12.xy, x12.xy),
+                            dot(x12.zw, x12.zw)
+                        ), 
+                        0.0
+                    );
+                    m = m * m;
+                    m = m * m;
+
+                    vec3 x = 2.0 * fract(p * C.www) - 1.0;
+                    vec3 h = abs(x) - 0.5;
+                    vec3 ox = floor(x + 0.5);
+                    vec3 a0 = x - ox;
+                    m *= 1.79284291400159 - 0.85373472095314 * (a0*a0 + h*h);
+
+                    vec3 g;
+                    g.x  = a0.x  * x0.x  + h.x  * x0.y;
+                    g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+                    return 130.0 * dot(m, g);
+                }
+
+                struct ColorStop {
+                    vec3 color;
+                    float position;
+                };
+
+                #define COLOR_RAMP(colors, factor, finalColor) { \
+                    int index = 0; \
+                    for (int i = 0; i < 2; i++) { \
+                       ColorStop currentColor = colors[i]; \
+                       bool isInBetween = currentColor.position <= factor; \
+                       index = int(mix(float(index), float(i), float(isInBetween))); \
+                    } \
+                    ColorStop currentColor = colors[index]; \
+                    ColorStop nextColor = colors[index + 1]; \
+                    float range = nextColor.position - currentColor.position; \
+                    float lerpFactor = (factor - currentColor.position) / range; \
+                    finalColor = mix(currentColor.color, nextColor.color, lerpFactor); \
+                }
+
+                void main() {
+                    vec2 uv = gl_FragCoord.xy / uResolution;
+                    
+                    ColorStop colors[3];
+                    colors[0] = ColorStop(uColorStops[0], 0.0);
+                    colors[1] = ColorStop(uColorStops[1], 0.5);
+                    colors[2] = ColorStop(uColorStops[2], 1.0);
+                    
+                    vec3 rampColor;
+                    COLOR_RAMP(colors, uv.x, rampColor);
+                    
+                    float height = snoise(vec2(uv.x * 2.0 + uTime * 0.1, uTime * 0.25)) * 0.5 * uAmplitude;
+                    height = exp(height);
+                    height = (uv.y * 2.0 - height + 0.2);
+                    float intensity = 0.6 * height;
+                    
+                    float midPoint = 0.20;
+                    float auroraAlpha = smoothstep(midPoint - uBlend * 0.5, midPoint + uBlend * 0.5, intensity);
+                    
+                    vec3 auroraColor = intensity * rampColor;
+                    
+                    fragColor = vec4(auroraColor * auroraAlpha, auroraAlpha);
+                }`;
+
+                function createShader(glCtx, type, source) {
+                    const shader = glCtx.createShader(type);
+                    glCtx.shaderSource(shader, source);
+                    glCtx.compileShader(shader);
+                    if (!glCtx.getShaderParameter(shader, glCtx.COMPILE_STATUS)) {
+                        console.error(glCtx.getShaderInfoLog(shader));
+                        glCtx.deleteShader(shader);
+                        return null;
+                    }
+                    return shader;
+                }
+
+                const vs = createShader(gl, gl.VERTEX_SHADER, vsSource);
+                const fs = createShader(gl, gl.FRAGMENT_SHADER, fsSource);
+                if (!vs || !fs) return;
+
+                const program = gl.createProgram();
+                gl.attachShader(program, vs);
+                gl.attachShader(program, fs);
+                gl.linkProgram(program);
+                if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+                    console.error(gl.getProgramInfoLog(program));
+                    return;
+                }
+
+                const positionBuffer = gl.createBuffer();
+                gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+                    -1, -1,
+                     1, -1,
+                    -1,  1,
+                     1,  1
+                ]), gl.STATIC_DRAW);
+
+                const posLoc = gl.getAttribLocation(program, 'position');
+                const timeLoc = gl.getUniformLocation(program, 'uTime');
+                const ampLoc = gl.getUniformLocation(program, 'uAmplitude');
+                const blendLoc = gl.getUniformLocation(program, 'uBlend');
+                const resLoc = gl.getUniformLocation(program, 'uResolution');
+                const colorsLoc = gl.getUniformLocation(program, 'uColorStops');
+
+                const colorStops = [
+                    217/255, 217/255, 214/255, // #D9D9D6
+                    139/255, 141/255, 147/255, // #8B8D93
+                    245/255, 245/255, 244/255  // #F5F5F4
+                ];
+
+                function handleResize() {
+                    const w = window.innerWidth;
+                    const h = window.innerHeight;
+                    canvas.width = w;
+                    canvas.height = h;
+                    gl.viewport(0, 0, w, h);
+                }
+                window.addEventListener('resize', handleResize);
+                handleResize();
+
+                let startTime = performance.now();
+                function renderLoop() {
+                    const now = performance.now();
+                    const elapsed = (now - startTime) * 0.001;
+
+                    gl.clearColor(0, 0, 0, 0);
+                    gl.clear(gl.COLOR_BUFFER_BIT);
+
+                    gl.useProgram(program);
+                    gl.enable(gl.BLEND);
+                    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+
+                    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+                    gl.enableVertexAttribArray(posLoc);
+                    gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+
+                    gl.uniform1f(timeLoc, elapsed * 0.5 * 0.1);
+                    gl.uniform1f(ampLoc, 1.0);
+                    gl.uniform1f(blendLoc, 0.5);
+                    gl.uniform2f(resLoc, canvas.width, canvas.height);
+                    gl.uniform3fv(colorsLoc, colorStops);
+
+                    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                    requestAnimationFrame(renderLoop);
+                }
+                requestAnimationFrame(renderLoop);
+            } catch (err) {
+                console.error("Aurora WebGL initialization error:", err);
+            }
+        }
+
+        // Initialize components on load
+        window.addEventListener('DOMContentLoaded', () => {
+            initAuroraWebGL();
+            initParticleText();
+            initSplitFlapText();
+        });
     </script>
 </body>
 </html>
